@@ -19,13 +19,10 @@ class AdminController extends Controller
     {
 
         try {
-
-
             if (!Auth::attempt($request->only('email', 'password'))) {
                 return response([
                     'message' => 'invalid user credentials',
                 ]);
-
             } 
             else {
                 $user = Auth::user();
