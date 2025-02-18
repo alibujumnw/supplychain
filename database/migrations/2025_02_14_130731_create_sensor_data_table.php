@@ -19,7 +19,6 @@ return new class extends Migration
             $table->float('rainfall');  
             $table->dateTime('recorded_at');  
             $table->timestamps();
-            $table->timestamps();
         });
     }
 
