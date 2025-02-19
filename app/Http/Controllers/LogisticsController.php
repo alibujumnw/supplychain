@@ -3,52 +3,61 @@
 namespace App\Http\Controllers;
 
 use Exception;
+use App\Models\User;
+use App\Models\Logistic;
 use Illuminate\Http\Request;
 use App\Models\LogisticsRoute;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class LogisticsController extends Controller
 {
-  public function login(Request $request)
-  {
-    try {
-
-
-        if (!Auth::attempt($request->only('email', 'password'))) {
-            return response([
-                'message' => 'invalid user credentials',
-            ]);
-
-        } 
-        else {
-            $user = Auth::user();
-
-            $token = $user->createToken('token')->plainTextToken;
-            $cooke = cookie('jwt', $token, 60 * 11);
-
-            #otp nolonger send to employee
-            return response()->json([
-                'status' => 'Request was successfull',
-                'message' => 'sign-in successfully',
-                'data' => $token,
-            ], 200)->withCookie($cooke);
-
-        }
-    } catch (Exception $e) {
-        $massage = $e->getMessage();
-        return response()->json([
-            'status' => 'Request error',
-            'message' => 'something went wrong',
-            'data' => $massage,
-        ], 400);
-    }
-  }
 
   //logistics account
+  public function create_farmer(Request $request)
+  {
+     $validated = $request->validate([
+         'name' => 'required|string|max:255',
+         'email' => 'required|string|email|max:255|unique:users',
+         'password' => 'required|string|min:8|confirmed',
+         'type'=>'nulluable|string',
+     ]);
+     if($request->type=='admin')
+     {
+         return response()->json(['message'=>'unable to create user with such role']);
+     }
+     $user = User::create([
+         'name' => $validated['name'],
+         'email' => $validated['email'],
+         'password' => Hash::make($validated['password']),
+         'type' => $validated['type'],
+     ]);
+
+     $val = $request->validate([
+       'company_name' => 'required',
+        'company_location' => 'required',
+        'company_phone' => 'required',
+        'vihecle_type' => 'required', 
+        'vihecle_number' => 'required',
+        'driver' => 'required',
+        'driver_phone' => 'required',
+     ]);
+
+     $usr = Logistic::create($val);
+
+     if ($user) {
+         return response()->json(['message' => 'User created successfully'], 200);
+     } else {
+         return response()->json(['message' => 'Failed to create user'], 500);
+     }
+  }
+
+
+
 
   public function view_logistic(Request $request)
   {
-    $model = Logistics::where('id',$request->id)->first();
+    $model = Logistic::where('id',$request->id)->first();
 
     if(!$model)
     {

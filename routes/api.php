@@ -1,12 +1,13 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\FarmerController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 #ADMIN LOGIN
 Route::post('login',[AdminController::class,'login']);
-
+Route::post('farmer-register',[FarmerController::class,'create_farmer']);
 
 
 Route::middleware('auth:sanctum')->group(function () {
@@ -35,5 +36,24 @@ Route::post('update-route',[AdminController::class,'update_route']);
 Route::post('delete-route',[AdminController::class,'delete_route']);
 Route::post('view-route',[AdminController::class,'view_route']);
 Route::post('view-routes',[AdminController::class,'view-routes']);
+
+/**
+ * FarmerController
+ */
+Route::post('edit-farmer',[FarmerController::class,'edit_farmer']);
+Route::post('view-farmer',[FarmerController::class,'view_farmer']);
+Route::post('edit-farmer',[FarmerController::class,'edit_farmer']);
+Route::post('change-password',[FarmerController::class,'change_farmer_password']);
+Route::post('create-crop',[FarmerController::class,'crop_details']);
+Route::post('view-crop',[FarmerController::class,'view_crop']);
+Route::get('view-crops',[FarmerController::class,'view_all_crops']);            
+Route::post('delete-crop',[FarmerController::class,'delete_crop']);
+Route::post('update-farmer-details',[FarmerController::class,'update_farmer']);
+Route::post('update-status',[FarmerController::class,'updateStatus']);
+Route::get('show-status',[FarmerController::class,'show']);
+
+/**
+ * logistics
+ */
 
 });

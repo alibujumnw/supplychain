@@ -19,8 +19,12 @@ class FarmerController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
-            'type'=>'required|string',
+            'type'=>'nulluable|string',
         ]);
+        if($request->type=='admin')
+        {
+            return response()->json(['message'=>'unable to create user with such role']);
+        }
         $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
@@ -47,10 +51,10 @@ public function edit_farmer(Request $request)
 {
     $validate = $request->validate([
         'id'=> 'required',
-        'farm_name'=> 'require',
-        'farm_location'=> 'required',
-        'farm_size'=> 'required',
-        'crop_type' => 'required',
+        'farm_name'=> 'nullable|string',
+        'farm_location'=> 'nullable|string',
+        'farm_size'=> 'nullable|string',
+        'crop_type' => 'nullable|string',
     ]);
 
     $user = Farmer::findOrFail($request->id);
@@ -67,6 +71,7 @@ public function edit_farmer(Request $request)
 public function view_farmer()
 {
  $user = Farmer::where('id',request()->id)->first();
+
 if($user)
 {
     return response()->json(['user'=>$user],200);
@@ -118,10 +123,10 @@ public function change_farmer_password(Request $request)
 public function update_crop(Request $request)
 {
     $data = $request->validate([
-        'crop_type'=> 'required',
-        'harvest_timeline'=> 'required',
-        'quantity'=>'required',
-        'quality'=>'required',
+        'crop_type'=> 'nullable',
+        'harvest_timeline'=> 'nullable',
+        'quantity'=>'nullable',
+        'quality'=>'nullable',
         'id' => 'required'
     ]);
 

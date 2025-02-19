@@ -12,8 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('logistics', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->timestamps();
+        $table->uuid('id')->primary();
+        $table->string('company_name'); 
+        $table->string('company_location'); 
+        $table->string('company_phone');
+        $table->string('vihecle_type'); 
+        $table->string('vihecle_number');
+        $table->string('driver');
+        $table->string('driver_phone');
+        $table->timestamps();
         });
     }
 

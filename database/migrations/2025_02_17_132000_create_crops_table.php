@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('crops', function (Blueprint $table) {
             $table->id();
+            $table->string('crop_type');
+            $table->string('harvest_timeline');
+            $table->integer('quantity');
+            $table->string('quality');
             $table->timestamps();
         });
     }
