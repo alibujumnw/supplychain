@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Exception;
 use App\Models\Crop;
+use App\Models\User;
 use App\Models\Farmer;
 use App\Models\Delivery;
 use Illuminate\Http\Request;
@@ -12,24 +13,36 @@ use Illuminate\Support\Facades\Hash;
 
 class FarmerController extends Controller
 {
-   public function create_farmer(Request $request)
-   {
-    $validate = $request->validate([
-        "farm_name"=> "require",
-        "farm_location"=> "required",
-        "farm_size"=> "required",
-        "crop_type" => "required",
-    ]);
-    $user = Farmer::create($validate);
-    
-    if ($user) {
-        return response()->json(['message' => 'Farmer created successfully', 'user' => $user], 200);
-    } else {
-        return response()->json(['message' => 'Failed to create user'], 500);
-    }
+    public function create_farmer(Request $request)
+     {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+            'type'=>'required|string',
+        ]);
+        $user = User::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password']),
+            'type' => $validated['type'],
+        ]);
 
-}
+        $val = $request->validate([
+            "farm_name"=> "require",
+            "farm_location"=> "required",
+            "farm_size"=> "required",
+            "crop_type" => "required",
+        ]);
 
+        $usr = Farmer::create($val);
+
+        if ($user) {
+            return response()->json(['message' => 'User created successfully'], 200);
+        } else {
+            return response()->json(['message' => 'Failed to create user'], 500);
+        }
+     }
 public function edit_farmer(Request $request)
 {
     $validate = $request->validate([

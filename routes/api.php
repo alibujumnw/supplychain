@@ -22,18 +22,18 @@ Route::post('create-device',[AdminController::class,'add_LoT']);
 Route::post('update-device',[AdminController::class,'update_LoT']);
 Route::post('delete-device',[AdminController::class,'deletw_LoT']);
 Route::get('view-devices',[AdminController::class,'read_all_LoT']);
-Route::get('view-device',[AdminController::class,'read_LoT']);
+Route::get('view-device/{id}',[AdminController::class,'read_LoT']);
 
 //LoT condition
 Route::post('create-device-condition',[AdminController::class,'create_LoT_condition']);
 Route::post('delete-device-condition',[AdminController::class,'delete_LoT_condition']);
 Route::post('update-device-condition',[AdminController::class,'update_LoT_condtion']);
-Route::get('view-device-condition',[AdminController::class,'view_LoT_condition']);
+Route::get('view-device-condition/{id}',[AdminController::class,'view_LoT_condition']);
 
 //logistics routes
 Route::post('update-route',[AdminController::class,'update_route']);
-Route::post('delete-device',[AdminController::class,'delete_route']);
-Route::get('view-route',[AdminController::class,'view_route']);
+Route::post('delete-route',[AdminController::class,'delete_route']);
+Route::post('view-route',[AdminController::class,'view_route']);
 Route::post('view-routes',[AdminController::class,'view-routes']);
 
 });

@@ -7,6 +7,7 @@ use Exception;
 use App\Models\User;
 use App\Models\Route;
 use App\Models\Device;
+use App\Models\Farmer;
 use App\Models\SensorData;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -29,12 +30,13 @@ class AdminController extends Controller
 
                 $token = $user->createToken('token')->plainTextToken;
                 $cooke = cookie('jwt', $token, 60 * 11);
-
+                $role = $user->type;
                 #otp nolonger send to employee
                 return response()->json([
                     'status' => 'Request was successfull',
                     'message' => 'Admin has been sign-in successfully',
                     'data' => $token,
+                    'role' => $role,
                 ], 200)->withCookie($cooke);
 
             }
@@ -67,8 +69,17 @@ class AdminController extends Controller
             'type' => $validated['type'],
         ]);
 
+        $val = $request->validate([
+            "farm_name"=> "require",
+            "farm_location"=> "required",
+            "farm_size"=> "required",
+            "crop_type" => "required",
+        ]);
+
+        $usr = Farmer::create($val);
+
         if ($user) {
-            return response()->json(['message' => 'User created successfully', 'user' => $user], 200);
+            return response()->json(['message' => 'User created successfully'], 200);
         } else {
             return response()->json(['message' => 'Failed to create user'], 500);
         }
@@ -86,11 +97,9 @@ public function update_user(Request $request)
         'id'=>'required'
     ]);
 
-
 try {
 
     $model = User::findOrFail($request->id);
-
     $model->fill($validated);
 
     $saved = $model->save();
