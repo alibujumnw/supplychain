@@ -11,9 +11,10 @@ class Farmer extends Model
     use HasFactory,HasUuids;
 
     protected $fillable = [ 
+        'surname',
+        'name',
         'farm_name', 
         'farm_location', 
-        'farm_size', 
-        'crop_type', 
+        'farm_size',  
     ];
 }

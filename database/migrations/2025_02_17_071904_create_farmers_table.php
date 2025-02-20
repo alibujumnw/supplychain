@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('farmers', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->string('surname');
+            $table->string('name');
             $table->string('farm_name');
             $table->string('farm_location');
             $table->integer('farm_size');

@@ -33,10 +33,12 @@ class FarmerController extends Controller
         ]);
 
         $val = $request->validate([
-            "farm_name"=> "require",
-            "farm_location"=> "required",
-            "farm_size"=> "required",
-            "crop_type" => "required",
+            'surname' => 'required',
+            'name' => 'required',
+            'farm_name'=> 'require',
+            'farm_location'=>'required',
+            'farm_size'=> 'required',
+            'crop_type' => 'required',
         ]);
 
         $usr = Farmer::create($val);
