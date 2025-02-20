@@ -75,7 +75,6 @@ class AdminController extends Controller
             'farm_name'=> 'require',
             'farm_location'=>'required',
             'farm_size'=> 'required',
-            'crop_type' => 'required',
         ]);
 
         $usr = Farmer::create($val);
@@ -99,13 +98,21 @@ public function update_user(Request $request)
         'id'=>'required'
     ]);
 
+    $val = $request->validate([
+        'surname' => 'nullable',
+        'name' => 'nullable',
+        'farm_name'=> 'nullable',
+        'farm_location'=>'nullable',
+        'farm_size'=> 'nullable',
+    ]);
+
 try {
 
     $model = User::findOrFail($request->id);
     $model->fill($validated);
 
     $saved = $model->save();
-
+    
     if ($saved) {
         return response()->json(['message' => 'User updated successfully', 'user' => $model], 200);
     } else {
@@ -174,7 +181,12 @@ public function add_LoT(Request $request)
         'device_type' => 'required|string|max:255',
         'serial_number' => 'required|string|unique:devices,serial_number',
         'description' => 'nullable|string',
-        'status' => 'nullable|string|in:active,inactive',
+        'status' => 'nullable|string|inactive,inactive',
+        'user_id' => 'required',
+        'device_location' => 'required',
+        'location'=>'nullable',
+        'reg_number' => 'nullable',
+
     ]);
 
     
@@ -207,6 +219,10 @@ public function update_LoT(Request $request)
         'description' => 'nullable|string',
         'status' => 'nullable|string|in:active,inactive',
         'id'=>'required',
+        'user_id' => 'required',
+        'device_location' => 'required',
+        'location'=>'nullable',
+        'reg_number' => 'nullable',
     ]);
 
  
