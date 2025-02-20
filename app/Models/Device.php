@@ -16,5 +16,9 @@ class Device extends Model
         'serial_number',
         'description',
         'status',
+        'user_id',
+        'device_location',
+        'location',
+        'reg_number',
     ];
 }

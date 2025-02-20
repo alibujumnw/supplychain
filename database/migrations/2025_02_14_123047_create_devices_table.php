@@ -18,6 +18,10 @@ return new class extends Migration
             $table->string('serial_number')->unique();
             $table->text('description')->nullable(); 
             $table->string('status')->default('inactive');
+            $table->string('user_id')->nullable();
+        $table->string('device_location');
+        $table->string('location');
+        $table->string('reg_number');
             $table->timestamps();
         });
     }

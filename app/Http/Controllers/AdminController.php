@@ -98,21 +98,14 @@ public function update_user(Request $request)
         'id'=>'required'
     ]);
 
-    $val = $request->validate([
-        'surname' => 'nullable',
-        'name' => 'nullable',
-        'farm_name'=> 'nullable',
-        'farm_location'=>'nullable',
-        'farm_size'=> 'nullable',
-    ]);
-
 try {
 
     $model = User::findOrFail($request->id);
     $model->fill($validated);
 
     $saved = $model->save();
-    
+   
+
     if ($saved) {
         return response()->json(['message' => 'User updated successfully', 'user' => $model], 200);
     } else {
