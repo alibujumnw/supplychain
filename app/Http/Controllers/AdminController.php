@@ -66,7 +66,7 @@ class AdminController extends Controller
         $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
-            'password' => Hash::make($validated['password']),
+            'password' => Hash::make($request->password),
             'type' => $validated['type'],
         ]);
         $usr = Farmer::create([
