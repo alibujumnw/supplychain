@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Route;
 use App\Models\Device;
 use App\Models\Farmer;
+use App\Models\Supplier;
 use App\Models\SensorData;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -68,18 +69,15 @@ class AdminController extends Controller
             'password' => Hash::make($validated['password']),
             'type' => $validated['type'],
         ]);
-
-        $val = $request->validate([
-            'surname' => 'required',
-            'name' => 'required',
-            'farm_name'=> 'required',
-            'farm_location'=>'required',
-            'farm_size'=> 'required',
+        $usr = Farmer::create([
+            'surname' => $request->surname,
+            'name' => $request->name,
+            'farm_name' => $request->farm_name,
+            'farm_location' =>$request->farm_location,
+            'farm_size' => $request->farm_size,
         ]);
 
-        $usr = Farmer::create($val);
-
-        if ($user) {
+        if ($user && $usr) {
             return response()->json(['message' => 'User created successfully'], 200);
         } else {
             return response()->json(['message' => 'Failed to create user'], 500);
@@ -140,28 +138,32 @@ public function view_all_users($type)
      }
      else if($type == 'supplier')
      {
-    //$data = Supplier::all();
-    //$result = $user->concat($data);
+    $data = Supplier::all();
+    $result = $user->concat($data);
 
-    //return response()->json(['data'=>$result],200);
+    return response()->json(['data'=>$result],200);
      }
      
 
 }
 
- public function read_all_users()
+ /*public function read_all_users()
    {
     $users = User::all();
     return response()->json(['users'=>$users],200);
 
-}
+}*/
 
    public function read_user($id)
    {
     try {
         $user = User::findOrFail($id);
     
-        return response()->json(['message' => 'User found', 'user' => $user], 200);
+        $type = $user->type;
+
+        if($type == 'farmer')
+        {}
+        //return response()->json(['message' => 'User found', 'user' => $user], 200);
     
     } catch (ModelNotFoundException $e) {
         return response()->json(['message' => 'User not found'], 404);

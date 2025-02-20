@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('farmers', function (Blueprint $table) {
+        Schema::create('suppliers', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('surname');
             $table->string('name');
-            $table->string('farm_name');
-            $table->string('farm_location');
-            $table->string('farm_size');
+            $table->string('company_name');
+            $table->string('company_address');
+            $table->integer('phone_number',);
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('farmers');
+        Schema::dropIfExists('suppliers');
     }
 };

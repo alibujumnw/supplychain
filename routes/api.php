@@ -2,16 +2,20 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\FarmerController;
+use App\Http\Controllers\SupplierController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 #ADMIN LOGIN
 Route::post('login',[AdminController::class,'login']);
+
+#farmer Register
 Route::post('farmer-register',[FarmerController::class,'create_farmer']);
 
 
 Route::middleware('auth:sanctum')->group(function () {
 //admin routes
+
 Route::post('create-user',[AdminController::class,'create_user']);
 Route::post('update-user',[AdminController::class,'update_user']);
 Route::get('view-users',[AdminController::class,'read_all_users']);
@@ -53,6 +57,7 @@ Route::post('update-status',[FarmerController::class,'updateStatus']);
 Route::get('show-status',[FarmerController::class,'show']);
 Route::get('view-all-users/{type}',[AdminController::class,'view_all_users']);
 
+Route::post('create-supplier',[SupplierController::class,'create_user']);
 /**
  * logistics
  */
