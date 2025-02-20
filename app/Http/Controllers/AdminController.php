@@ -130,27 +130,26 @@ try {
  */
 public function view_all_users($type)
 {
-     $user = User::where('type',$type)->get();
-     
-     if($type == 'farmer')
-     {
-    
-    $data = Farmer::all();
-    foreach($user as $data)
-    {
-        $result = $user->concat($user);
+    $users = User::where('type', $type)->get();
+
+    if ($type === 'farmer') {
+        $farmers = Farmer::all()->keyBy('farmer_id'); // Assuming 'user_id' links Farmer to User
+        $result = $users->map(function ($user) use ($farmers) {
+            return array_merge($user->toArray(), $farmers[$user->id]->toArray() ?? []);
+        });
+
+        return response()->json(['data' => $result], 200);
+
+    } elseif ($type === 'supplier') {
+        $suppliers = Supplier::all()->keyBy('supplier_id'); // Assuming 'user_id' links Supplier to User
+        $result = $users->map(function ($user) use ($suppliers) {
+            return array_merge($user->toArray(), $suppliers[$user->id]->toArray() ?? []);
+        });
+
+        return response()->json(['data' => $result], 200);
     }
-    return response()->json(['data'=>$result],200);
-     }
-     else if($type == 'supplier')
-     {
-    $data = Supplier::all();
-    $result = $user->concat($data);
 
-    return response()->json(['data'=>$result],200);
-     }
-     
-
+    return response()->json(['message' => 'Invalid user type'], 400);
 }
 
  /*public function read_all_users()
