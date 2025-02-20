@@ -51,6 +51,7 @@ Route::post('delete-crop',[FarmerController::class,'delete_crop']);
 Route::post('update-farmer-details',[FarmerController::class,'update_farmer']);
 Route::post('update-status',[FarmerController::class,'updateStatus']);
 Route::get('show-status',[FarmerController::class,'show']);
+Route::get('view-all-users/{type}',[AdminController::class,'view_all_users']);
 
 /**
  * logistics

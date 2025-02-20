@@ -72,7 +72,7 @@ class AdminController extends Controller
         $val = $request->validate([
             'surname' => 'required',
             'name' => 'required',
-            'farm_name'=> 'require',
+            'farm_name'=> 'required',
             'farm_location'=>'required',
             'farm_size'=> 'required',
         ]);
@@ -127,11 +127,34 @@ try {
  * read all users
  * read one user
  */
-   public function read_all_users()
+public function view_all_users($type)
+{
+     $user = User::where('type',$type)->get();
+     
+     if($type == 'farmer')
+     {
+        $data = Farmer::all();
+    $result = $user->concat($data);
+
+    return response()->json(['data'=>$result],200);
+     }
+     else if($type == 'supplier')
+     {
+    //$data = Supplier::all();
+    //$result = $user->concat($data);
+
+    //return response()->json(['data'=>$result],200);
+     }
+     
+
+}
+
+ public function read_all_users()
    {
     $users = User::all();
     return response()->json(['users'=>$users],200);
-   }
+
+}
 
    public function read_user($id)
    {
@@ -150,7 +173,7 @@ try {
  /**
   * delete user
   */
- public function delete_user(Request $request)
+ public function delete_users(Request $request)
  {
    User::find($request->id)->delete();    
    return response()->json(['message'=> 'Account deleted'],200);
