@@ -47,4 +47,14 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function farmer()
+{
+    return $this->hasOne(Farmer::class, 'farmer_id');
+}
+
+public function supplier()
+{
+    return $this->hasOne(Supplier::class, 'supplier_id');
+}
 }

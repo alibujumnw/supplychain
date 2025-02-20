@@ -18,4 +18,9 @@ class Farmer extends Model
         'farm_size', 
         'farmer_id' 
     ];
+
+    public function user()
+{
+    return $this->belongsTo(User::class, 'farmer_id');
+}
 }

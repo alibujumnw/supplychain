@@ -69,18 +69,19 @@ class AdminController extends Controller
             'password' => Hash::make($request->password),
             'type' => $request->type,
         ]);
-        $id = User::where('email',$request->email)->where('type',$request->type);
+        $user = User::where('email', $request->email)
+        ->where('type', $request->type)
+        ->firstOrFail();
 
-        $usr = Farmer::create([
-            'surname' => $request->surname,
-            'name' => $request->name,
-            'farm_name' => $request->farm_name,
-            'farm_location' =>$request->farm_location,
-            'farm_size' => $request->farm_size,
-            'farmer_id' => $id,
-        ]);
+$farmer = $user->farmer()->create([
+'surname' => $request->surname,
+'name' => $request->name,
+'farm_name' => $request->farm_name,
+'farm_location' => $request->farm_location,
+'farm_size' => $request->farm_size,
+]);
 
-        if ($user && $usr) {
+        if ($user && $farmer) {
             return response()->json(['message' => 'User created successfully'], 200);
         } else {
             return response()->json(['message' => 'Failed to create user'], 500);
@@ -130,26 +131,18 @@ try {
  */
 public function view_all_users($type)
 {
-    $users = User::where('type', $type)->get();
-
     if ($type === 'farmer') {
-        $farmers = Farmer::all()->keyBy('id'); // Assuming 'user_id' links Farmer to User
-        $result = $users->map(function ($user) use ($farmers) {
-            return array_merge($user->toArray(), $farmers[$user->id]->toArray() ?? []);
-        });
-
-        return response()->json(['data' => $result], 200);
-
+        // Fetch farmers along with their related user data
+        $users = User::where('type', 'farmer')->with('farmer')->get();
     } elseif ($type === 'supplier') {
-        $suppliers = Supplier::all()->keyBy('supplier_id'); // Assuming 'user_id' links Supplier to User
-        $result = $users->map(function ($user) use ($suppliers) {
-            return array_merge($user->toArray(), $suppliers[$user->id]->toArray() ?? []);
-        });
-
-        return response()->json(['data' => $result], 200);
+        // Fetch suppliers along with their related user data
+        $users = User::where('type', 'supplier')->with('supplier')->get();
+    } else {
+        // If the type is invalid, return an error response
+        return response()->json(['message' => 'Invalid user type'], 400);
     }
 
-    return response()->json(['message' => 'Invalid user type'], 400);
+    return response()->json(['data' => $users], 200);
 }
 
  /*public function read_all_users()
