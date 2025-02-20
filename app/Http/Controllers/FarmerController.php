@@ -15,31 +15,31 @@ class FarmerController extends Controller
 {
     public function create_farmer(Request $request)
     {
-       $validated = $request->validate([
-           'name' => 'nullable|string|max:255',
-           'email' => 'required|string|email|max:255|unique:users',
-           'password' => 'required|string|min:8',
-           'type'=>'required|string',
-       ]);
-       $user = User::create([
-           'name' => $validated['name'],
-           'email' => $validated['email'],
-           'password' => Hash::make($validated['password']),
-           'type' => $validated['type'],
-       ]);
-       $user = Farmer::create([
-           'surname' => $validated['surname'],
-           'name' => $validated['name'],
-           'farm_name' => $validated['farm_name'],
-           'farm_location' =>$validated['farm_location'],
-           'farm_size' => $validated['farm_size'],
-       ]);
+        $validated = $request->validate([
+            'name' => 'nullable|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8',
+            'type'=>'required|string',
+        ]);
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'type' => $request->type,
+        ]);
+        $usr = Farmer::create([
+            'surname' => $request->surname,
+            'name' => $request->name,
+            'farm_name' => $request->farm_name,
+            'farm_location' =>$request->farm_location,
+            'farm_size' => $request->farm_size,
+        ]);
 
-       if ($user) {
-           return response()->json(['message' => 'User created successfully'], 200);
-       } else {
-           return response()->json(['message' => 'Failed to create user'], 500);
-       }
+        if ($user && $usr) {
+            return response()->json(['message' => 'User created successfully'], 200);
+        } else {
+            return response()->json(['message' => 'Failed to create user'], 500);
+        }
     }
 public function edit_farmer(Request $request)
 {

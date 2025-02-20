@@ -16,40 +16,31 @@ class LogisticsController extends Controller
   //logistics account
   public function create_farmer(Request $request)
   {
-     $validated = $request->validate([
-         'name' => 'required|string|max:255',
-         'email' => 'required|string|email|max:255|unique:users',
-         'password' => 'required|string|min:8|confirmed',
-         'type'=>'nulluable|string',
-     ]);
-     if($request->type=='admin')
-     {
-         return response()->json(['message'=>'unable to create user with such role']);
-     }
-     $user = User::create([
-         'name' => $validated['name'],
-         'email' => $validated['email'],
-         'password' => Hash::make($validated['password']),
-         'type' => $validated['type'],
-     ]);
+    $validated = $request->validate([
+        'name' => 'nullable|string|max:255',
+        'email' => 'required|string|email|max:255|unique:users',
+        'password' => 'required|string|min:8',
+        'type'=>'required|string',
+    ]);
+    $user = User::create([
+        'name' => $request->name,
+        'email' => $request->email,
+        'password' => Hash::make($request->password),
+        'type' => $request->type,
+    ]);
+    $usr = Logistic::create([
+        'surname' => $request->surname,
+        'name' => $request->name,
+        'farm_name' => $request->farm_name,
+        'farm_location' =>$request->farm_location,
+        'farm_size' => $request->farm_size,
+    ]);
 
-     $val = $request->validate([
-       'company_name' => 'required',
-        'company_location' => 'required',
-        'company_phone' => 'required',
-        'vihecle_type' => 'required', 
-        'vihecle_number' => 'required',
-        'driver' => 'required',
-        'driver_phone' => 'required',
-     ]);
-
-     $usr = Logistic::create($val);
-
-     if ($user) {
-         return response()->json(['message' => 'User created successfully'], 200);
-     } else {
-         return response()->json(['message' => 'Failed to create user'], 500);
-     }
+    if ($user && $usr) {
+        return response()->json(['message' => 'User created successfully'], 200);
+    } else {
+        return response()->json(['message' => 'Failed to create user'], 500);
+    }
   }
 
 

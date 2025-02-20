@@ -69,12 +69,15 @@ class AdminController extends Controller
             'password' => Hash::make($request->password),
             'type' => $request->type,
         ]);
+        $id = User::where('email',$request->email)->where('type',$request->type);
+
         $usr = Farmer::create([
             'surname' => $request->surname,
             'name' => $request->name,
             'farm_name' => $request->farm_name,
             'farm_location' =>$request->farm_location,
             'farm_size' => $request->farm_size,
+            'farmer_id' => $id,
         ]);
 
         if ($user && $usr) {
@@ -131,9 +134,12 @@ public function view_all_users($type)
      
      if($type == 'farmer')
      {
-        $data = Farmer::all();
-    $result = $user->concat($data);
-
+    
+    $data = Farmer::all();
+    foreach($user as $data)
+    {
+        $result = $user->concat($user);
+    }
     return response()->json(['data'=>$result],200);
      }
      else if($type == 'supplier')

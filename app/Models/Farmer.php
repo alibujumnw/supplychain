@@ -15,6 +15,7 @@ class Farmer extends Model
         'name',
         'farm_name', 
         'farm_location', 
-        'farm_size',  
+        'farm_size', 
+        'farmer_id' 
     ];
 }

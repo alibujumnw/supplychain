@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('farm_name');
             $table->string('farm_location');
             $table->string('farm_size');
+            $table->string('farmer_id');
             $table->timestamps();
         });
     }
