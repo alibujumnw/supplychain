@@ -133,7 +133,7 @@ public function view_all_users($type)
     $users = User::where('type', $type)->get();
 
     if ($type === 'farmer') {
-        $farmers = Farmer::all()->keyBy('farmer_id'); // Assuming 'user_id' links Farmer to User
+        $farmers = Farmer::all()->keyBy('id'); // Assuming 'user_id' links Farmer to User
         $result = $users->map(function ($user) use ($farmers) {
             return array_merge($user->toArray(), $farmers[$user->id]->toArray() ?? []);
         });
