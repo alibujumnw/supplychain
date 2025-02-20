@@ -64,10 +64,10 @@ class AdminController extends Controller
             'type'=>'required|string',
         ]);
         $user = User::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
+            'name' => $request->name,
+            'email' => $request->email,
             'password' => Hash::make($request->password),
-            'type' => $validated['type'],
+            'type' => $request->type,
         ]);
         $usr = Farmer::create([
             'surname' => $request->surname,
