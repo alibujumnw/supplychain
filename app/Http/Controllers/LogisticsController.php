@@ -9,12 +9,13 @@ use Illuminate\Http\Request;
 use App\Models\LogisticsRoute;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class LogisticsController extends Controller
 {
 
   //logistics account
-  public function create_farmer(Request $request)
+  public function create_logistic(Request $request)
   {
     $validated = $request->validate([
         'name' => 'nullable|string|max:255',
@@ -28,37 +29,82 @@ class LogisticsController extends Controller
         'password' => Hash::make($request->password),
         'type' => $request->type,
     ]);
-    $usr = Logistic::create([
-        'surname' => $request->surname,
-        'name' => $request->name,
-        'farm_name' => $request->farm_name,
-        'farm_location' =>$request->farm_location,
-        'farm_size' => $request->farm_size,
-    ]);
+    $logistic = $user->logistic()->create(
+        [
+        'company_name' => $request->company_name, 
+        'company_location'=>$request->company_location, 
+        'company_phone' =>$request->company_phone,
+        'vihecle_type' => $request->vehecle_type, 
+        'vihecle_number' => $request->vehecle_number,
+        'driver' => $request->vehecle->driver,
+        'driver_phone' =>$request->driver_phone
+        ]
+        );
 
-    if ($user && $usr) {
+    if ($user && $logistic) {
         return response()->json(['message' => 'User created successfully'], 200);
     } else {
         return response()->json(['message' => 'Failed to create user'], 500);
     }
   }
 
+  public function edit_logistic(Request $request)
+  {
+      $validate = $request->validate([
+        'company_name' => 'nullable',
+        'company_location' => 'nullable', 
+        'company_phone' => 'nullable',
+        'vihecle_type' => 'nullable', 
+        'vihecle_number' => 'nullable',
+        'driver' => 'nullable',
+        'driver_phone' => 'nullable'
+    ]);
+  
+      $user = Logistic::where('logistic_id',$request->logistic_id)->first();
+      if(!$user)
+      {
+          return response()->json(['message'=>'user not found'],500);
+      }
+      else{
+      $user->fill($validate);
+      $model = $user->save($validate);
+  
+      $user = Logistic::where('logistic_id',$request->logistic_id)->first();
+      $name = array($user->name);
 
-
-
+      if( $model ) {
+          $usr = User::where('id',$request->logistic_id)->first();
+          $usr->fill($name);
+          $usr->save();
+          return response()->json(['message'=> 'logistic info updates','user'=> $user],200);
+      }
+  
+      }
+      
+  }
   public function view_logistic(Request $request)
   {
-    $model = Logistic::where('id',$request->id)->first();
-
-    if(!$model)
-    {
-        return response()->json(['message'=>'no user found'],500);
-    }
-    else
-    {
-        return response()->json(['user'=>$model],200);
-    }
+  $users = User::where('type', 'supplier')->with('supplier')->get();
+  return response()->json(['data'=>$users]);
   }
+
+
+  public function delete_logistic(Request $request)
+  {
+    
+  try{
+    $user = User::findOrFail($request->supplier_id);
+    $users = User::where('id', $request->id)->with('logistic')->delete();
+    return response()->json(['message','user deleted successful']);
+  
+    }
+    catch (ModelNotFoundException $e) {
+     return response()->json(['message' => 'User not found'], 404);
+  }
+    
+  }
+
+
 
 
     /**

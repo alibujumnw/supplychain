@@ -20,6 +20,7 @@ return new class extends Migration
         $table->string('vihecle_number');
         $table->string('driver');
         $table->string('driver_phone');
+        $table->string('logistic_id');
         $table->timestamps();
         });
     }

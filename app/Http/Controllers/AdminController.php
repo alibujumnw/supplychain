@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Logistic;
 use Hash;
 use Exception;
 use App\Models\User;
@@ -55,6 +56,7 @@ class AdminController extends Controller
     /*
     The admin has the ability to create new users
     */
+
      public function create_user(Request $request)
      {
         $validated = $request->validate([
@@ -72,21 +74,48 @@ class AdminController extends Controller
         $user = User::where('email', $request->email)
         ->where('type', $request->type)
         ->firstOrFail();
+if($request->type == 'farmer'){
+    $farmer = $user->farmer()->create([
+        'surname' => $request->surname,
+        'name' => $request->name,
+        'farm_name' => $request->farm_name,
+        'farm_location' => $request->farm_location,
+        'farm_size' => $request->farm_size,
+        ]);
+}
+elseif($request->type == 'supplier')
+{
+    $supplier = $user->supplier()->create([
+        'surname' => $request->surname,
+        'name' => $request->name,
+        'company_name' => $request->company_name,
+        'company_address' => $request->company_address,
+        'phone_number' => $request->phone_number,
+        ]);
+}
+elseif($request->type == 'logistic')
+{
+    $logistic = $user->logistic()->create(
+        [
+        'company_name' => $request->company_name, 
+        'company_location'=>$request->company_location, 
+        'company_phone' =>$request->company_phone,
+        'vihecle_type' => $request->vehecle_type, 
+        'vihecle_number' => $request->vehecle_number,
+        'driver' => $request->vehecle->driver,
+        'driver_phone' =>$request->driver_phone
+        ]
+        );
+}else
+{
+   
+    return response()->json(['message' => 'Failed to create user'], 500);
 
-$farmer = $user->farmer()->create([
-'surname' => $request->surname,
-'name' => $request->name,
-'farm_name' => $request->farm_name,
-'farm_location' => $request->farm_location,
-'farm_size' => $request->farm_size,
-]);
+}
 
-        if ($user && $farmer) {
-            return response()->json(['message' => 'User created successfully'], 200);
-        } else {
-            return response()->json(['message' => 'Failed to create user'], 500);
-        }
-     }
+return response()->json(['message' => 'User created successfully'], 200);
+        
+}
 /*
 update user
 */
@@ -100,16 +129,60 @@ public function update_user(Request $request)
         'id'=>'required'
     ]);
 
-try {
+    $val = $request->validate([
+        'surname' => 'nullable',
+        'name' => 'nullable',
+        'farm_name' => 'nullable',
+        'farm_location' => 'nullable',
+        'farm_size' => 'nullable',
+    ]);
+
+    $supplier = $request->validate([
+        'surname' => 'nullable|string',
+        'name' => 'nullable|string',
+        'company_name' => 'nullable|string',
+        'company_address' => 'nullable|string',
+        'phone_number' => 'nullable|string',
+    ]);
+
+    $logistic = $request->validate([
+        'company_name' => 'nullable',
+        'company_location' => 'nullable', 
+        'company_phone' => 'nullable',
+        'vihecle_type' => 'nullable', 
+        'vihecle_number' => 'nullable',
+        'driver' => 'nullable',
+        'driver_phone' => 'nullable'
+    ]);
+
+    try {
 
     $model = User::findOrFail($request->id);
+    $type = $model->type;
+    $id = $model->id;
+    if($type == 'farmer')
+    {
+      $mod = Farmer::where('farmer_id',$id)->first();
+      $mod->fill($val);
+      $mod->save($val);
+    }
+    else if($type == 'supplier')
+    {
+      $mod = Supplier::where('supplier_id',$id)->first();
+      $mod->fill($supplier);
+      $mod->save($supplier);
+    }
+    else if ($type == 'logistic'){
+        $mod = Logistic::where('logistic_id',$id)->first();
+        $mod->fill($logistic);
+        $mod->save($logistic);
+    }
+
     $model->fill($validated);
-
-    $saved = $model->save();
-   
-
+    $saved = $model->save($validated);
+ 
     if ($saved) {
-        return response()->json(['message' => 'User updated successfully', 'user' => $model], 200);
+        return response()->json(['message' => 'User updated successfully'], 200);
     } else {
         return response()->json(['message' => 'Failed to update user'], 500);
     }
@@ -137,7 +210,10 @@ public function view_all_users($type)
     } elseif ($type === 'supplier') {
         // Fetch suppliers along with their related user data
         $users = User::where('type', 'supplier')->with('supplier')->get();
-    } else {
+    }elseif($type === 'logistic'){
+            $user = User::where('type', 'logistic')->with('logistic')->get();
+    } 
+    else {
         // If the type is invalid, return an error response
         return response()->json(['message' => 'Invalid user type'], 400);
     }
@@ -145,38 +221,26 @@ public function view_all_users($type)
     return response()->json(['data' => $users], 200);
 }
 
- /*public function read_all_users()
-   {
-    $users = User::all();
-    return response()->json(['users'=>$users],200);
-
-}*/
-
-   public function read_user($id)
-   {
-    try {
-        $user = User::findOrFail($id);
-    
-        $type = $user->type;
-
-        if($type == 'farmer')
-        {}
-        //return response()->json(['message' => 'User found', 'user' => $user], 200);
-    
-    } catch (ModelNotFoundException $e) {
-        return response()->json(['message' => 'User not found'], 404);
-    }
-    
-
-   }
 
  /**
   * delete user
   */
- public function delete_users(Request $request)
+ public function delete_user(Request $request)
  {
-   User::find($request->id)->delete();    
-   return response()->json(['message'=> 'Account deleted'],200);
+   
+try{
+   $user = User::findOrFail($request->id);
+   $type = $user->type;
+
+   $users = User::where('id', $request->id)->with($type)->delete();
+   return response()->json(['message','user deleted successful']);
+
+   }
+   catch (ModelNotFoundException $e) {
+    // Catch if user with that ID is not found
+    return response()->json(['message' => 'User not found'], 404);
+}
+   
  }
 
 /**

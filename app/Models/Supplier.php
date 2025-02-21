@@ -16,5 +16,11 @@ class Supplier extends Model
         'company_name',
         'company_address',
         'phone_number',
+        'supplier_id'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'supplier_id');
+    }
 }

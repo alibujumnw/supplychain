@@ -10,6 +10,7 @@ use App\Models\Delivery;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class FarmerController extends Controller
 {
@@ -27,54 +28,87 @@ class FarmerController extends Controller
             'password' => Hash::make($request->password),
             'type' => $request->type,
         ]);
-        $usr = Farmer::create([
+        $farmer = $user->farmer()->create([
             'surname' => $request->surname,
             'name' => $request->name,
             'farm_name' => $request->farm_name,
-            'farm_location' =>$request->farm_location,
+            'farm_location' => $request->farm_location,
             'farm_size' => $request->farm_size,
-        ]);
+            ]);
 
-        if ($user && $usr) {
+        if ($user && $farmer) {
             return response()->json(['message' => 'User created successfully'], 200);
         } else {
             return response()->json(['message' => 'Failed to create user'], 500);
         }
     }
-public function edit_farmer(Request $request)
-{
-    $validate = $request->validate([
-        'id'=> 'required',
-        'farm_name'=> 'nullable|string',
-        'farm_location'=> 'nullable|string',
-        'farm_size'=> 'nullable|string',
-        'crop_type' => 'nullable|string',
-    ]);
 
-    $user = Farmer::findOrFail($request->id);
-    $user->fill($validate);
-    $model = $user->save();
 
-    if( $model ) {
-        return response()->json(['message'=> 'Farmer info updates','user'=> $user],200);
-    } else {
-        return response()->json(['message'=> 'Failed to update Farmer'],500);
+    
+    public function edit_farmer(Request $request)
+    {
+        $validate = $request->validate([
+            'surname' => 'nullable',
+            'name' => 'nullable',
+            'farm_name' => 'nullable',
+            'farm_location' => 'nullable',
+            'farm_size' => 'nullable',
+        ]);
+    
+        $user = Farmer::where('farmer_id',$request->farmer_id)->first();
+        if(!$user)
+        {
+            return response()->json(['message'=>'user not found'],500);
+        }
+        else{
+        $user->fill($validate);
+        $model = $user->save($validate);
+    
+        $user = Farmer::where('farmer_id',$request->farmer_id)->first();
+        $name = array($user->name);
+
+        if( $model ) {
+            $usr = User::where('id',$request->farmer_id)->first();
+            $usr->fill($name);
+            $usr->save();
+            return response()->json(['message'=> 'farmer info updates','user'=> $user],200);
+        }
+    
+        }
+        
     }
+
+
+public function view_farmers()
+{    
+ $users = User::where('type', 'supplier')->with('supplier')->get();
+ return response()->json(['data'=>$users]);
 }
 
-public function view_farmer()
+public function delete_farmer(Request $request)
 {
- $user = Farmer::where('id',request()->id)->first();
+  
+try{
+  $user = User::findOrFail($request->supplier_id);
+  $users = User::where('id', $request->id)->with('farmer')->delete();
+  return response()->json(['message','user deleted successful']);
 
-if($user)
-{
-    return response()->json(['user'=>$user],200);
+  }
+  catch (ModelNotFoundException $e) {
+   return response()->json(['message' => 'User not found'], 404);
 }
-else{
-    return response()->json(['message'=>'failed'],200);
+  
 }
 
-}
+
+
+
+
+
+
+
+
+
 
 public function change_farmer_password(Request $request)
 {

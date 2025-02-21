@@ -17,6 +17,11 @@ class Logistic extends Model
         'vihecle_type', 
         'vihecle_number',
         'driver',
-        'driver_phone' 
+        'driver_phone', 
+        'logistic_id'
     ];
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'logistic_id');
+    }
 }

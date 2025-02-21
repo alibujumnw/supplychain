@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\FarmerController;
+use App\Http\Controllers\LogisticsController;
 use App\Http\Controllers\SupplierController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -9,27 +10,61 @@ use Illuminate\Support\Facades\Route;
 #ADMIN LOGIN
 Route::post('login',[AdminController::class,'login']);
 
-#farmer Register
-Route::post('farmer-register',[FarmerController::class,'create_farmer']);
+/**
+ * create user
+ */
+Route::post('farmer-registration',[FarmerController::class,'create_farmer']);
+Route::post('supplier-registration',[SupplierController::class,'create_supplier']);
+Route::post('logistic-registration',[LogisticsController::class,'create_logistic']);
 
 
 Route::middleware('auth:sanctum')->group(function () {
-//admin routes
 
+/*
+* admin create users
+*/
 Route::post('create-user',[AdminController::class,'create_user']);
-Route::post('update-user',[AdminController::class,'update_user']);
-Route::get('view-users',[AdminController::class,'read_all_users']);
-Route::get('view-user/{id}',[AdminController::class,'read_user']);
-Route::post('delete-user',[AdminController::class,'delete_user']);
 
-//LoT Routes
+
+/*
+*update users
+*/
+Route::post('update-user',[AdminController::class,'update_user']); 
+Route::post('update-farmer-details',[FarmerController::class,'edit_farmer']);
+Route::post('update-supplier-details',[SupplierController::class,'edit_supplier']);
+Route::post('update-logistic-details',[LogisticsController::class,'edit_logistic']);
+
+
+/*
+ *View users 
+ */
+Route::get('view-all-users/{type}',[AdminController::class,'view_all_users']);
+Route::get('view-suppliers',[SupplierController::class,'view_suppliers']);
+Route::get('view-farmers',[FarmerController::class,'view_farmers']);
+Route::get('view-logistic',[LogisticsController::class,'view_logistic']);
+
+
+/**
+ * Delete users
+ */
+Route::post('delete-user',[AdminController::class,'delete_user']);
+Route::post('delete-farmer',[FarmerController::class,'delete_farmer']);
+Route::post('delete-supplier',[SupplierController::class,'delete_supplier']);
+Route::post('delete-logistic',[LogisticsController::class,'delete_logistic']);
+
+
+
+
+
+
+//IoT Routes
 Route::post('create-device',[AdminController::class,'add_LoT']);
 Route::post('update-device',[AdminController::class,'update_LoT']);
 Route::post('delete-device',[AdminController::class,'deletw_LoT']);
 Route::get('view-devices',[AdminController::class,'read_all_LoT']);
 Route::get('view-device/{id}',[AdminController::class,'read_LoT']);
 
-//LoT condition
+//IoT condition
 Route::post('create-device-condition',[AdminController::class,'create_LoT_condition']);
 Route::post('delete-device-condition',[AdminController::class,'delete_LoT_condition']);
 Route::post('update-device-condition',[AdminController::class,'update_LoT_condtion']);
@@ -55,9 +90,9 @@ Route::post('delete-crop',[FarmerController::class,'delete_crop']);
 Route::post('update-farmer-details',[FarmerController::class,'update_farmer']);
 Route::post('update-status',[FarmerController::class,'updateStatus']);
 Route::get('show-status',[FarmerController::class,'show']);
-Route::get('view-all-users/{type}',[AdminController::class,'view_all_users']);
 
-Route::post('create-supplier',[SupplierController::class,'create_user']);
+
+
 /**
  * logistics
  */

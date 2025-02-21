@@ -57,4 +57,9 @@ public function supplier()
 {
     return $this->hasOne(Supplier::class, 'supplier_id');
 }
+
+public function logistic()
+{
+    return $this->hasOne(Logistic::class, 'logistic_id');
+}
 }
