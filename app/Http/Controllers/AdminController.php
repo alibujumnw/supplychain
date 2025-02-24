@@ -53,6 +53,12 @@ class AdminController extends Controller
             ], 400);
         }
     }
+
+    public function test()
+    {
+        echo"";
+    }
+
     /*
     The admin has the ability to create new users
     */
