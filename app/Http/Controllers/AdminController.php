@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Logistic;
 use Hash;
 use Exception;
 use App\Models\User;
 use App\Models\Route;
 use App\Models\Device;
 use App\Models\Farmer;
+use App\Models\Logistic;
 use App\Models\Supplier;
 use App\Models\SensorData;
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -51,17 +53,9 @@ class AdminController extends Controller
             ], 400);
         }
     }
-
-
     /*
     The admin has the ability to create new users
     */
-
-
-
-
-
-
      public function create_user(Request $request)
      {
         $validated = $request->validate([
@@ -129,7 +123,7 @@ public function update_user(Request $request)
 {
     $validated = $request->validate([
         'name' => 'nullable|string|max:255',
-        'email'=> 'nullable|string|max:255',
+        'email'=> 'nullable|string|max:255'. $request->id,
         'type'=> 'nullable|string|max:255',
         'id'=>'required'
     ]);
@@ -163,30 +157,31 @@ public function update_user(Request $request)
     try {
 
     $model = User::findOrFail($request->id);
+    $email = $model->email;
     $type = $model->type;
     $id = $model->id;
     if($type == 'farmer')
     {
       $mod = Farmer::where('farmer_id',$id)->first();
+      $val['email'] = $email;
       $mod->fill($val);
-      $mod->save($val);
+     $save = $mod->save();
     }
     else if($type == 'supplier')
     {
       $mod = Supplier::where('supplier_id',$id)->first();
+    //   $val['email'] = $email;
       $mod->fill($supplier);
-      $mod->save($supplier);
+      $save = $mod->save($supplier);
     }
     else if ($type == 'logistic'){
         $mod = Logistic::where('logistic_id',$id)->first();
+        $val['email'] = $email;
         $mod->fill($logistic);
-        $mod->save($logistic);
+        $save = $mod->save($logistic);
     }
-
-    $model->fill($validated);
-    $saved = $model->save();
  
-    if ($saved) {
+    if ($save) {
         return response()->json(['message' => 'User updated successfully'], 200);
     } else {
         return response()->json(['message' => 'Failed to update user'], 500);
@@ -230,14 +225,14 @@ public function view_all_users($type)
  /**
   * delete user
   */
- public function delete_user(Request $request)
+ public function delete_user($id)
  {
    
 try{
-   $user = User::findOrFail($request->id);
+   $user = User::findOrFail($id);
    $type = $user->type;
 
-   $users = User::where('id', $request->id)->with($type)->delete();
+   $users = User::where('id', $id)->with($type)->delete();
    return response()->json(['message','user deleted successful']);
 
    }
@@ -246,7 +241,7 @@ try{
     return response()->json(['message' => 'User not found'], 404);
 }
    
- }
+}
 
   //create LoT
 
@@ -318,9 +313,9 @@ public function update_LoT(Request $request)
 }
 
 //delete
-public function delete_LoT(Request $request)
+public function delete_LoT($id)
 {
-    $device = Device::findOrFail($request->id);
+    $device = Device::findOrFail($id);
     $device->delete();
     return response()->json(['message'=>'Device destroyed'],200);
 }
@@ -360,9 +355,9 @@ public function create_LoT_condition(Request $request)
     
 }
 
-public function delete_LoT_condition(Request $request)
+public function delete_LoT_condition($id)
 {
-    $device = SensorData::findOrFail($request->id);
+    $device = SensorData::findOrFail($id);
     $device->delete();
     return response()->json(['message'=>'Sensor Data Destroyed'],200);
 }
@@ -419,9 +414,9 @@ public function view_LoT_condition($id)
  }
  }
 
- public function delete_route(Request $request)
+ public function delete_route($id)
  {
-    $route = Route::findOrFail($request->route_id);
+    $route = Route::findOrFail($id);
     $route->delete();
     return response()->json(['message'=> 'Route removed'],200);
  }
@@ -435,7 +430,5 @@ public function view_LoT_condition($id)
     $route = Route::where($request->route_id)->first();
     return response()->json(['route'=>$route],200);
 }
-
-
 
 }
