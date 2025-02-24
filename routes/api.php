@@ -1,11 +1,12 @@
 <?php
 
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\FarmerController;
-use App\Http\Controllers\LogisticsController;
-use App\Http\Controllers\SupplierController;
+use cors;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\FarmerController;
+use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\LogisticsController;
 
 #ADMIN LOGIN
 Route::post('login',[AdminController::class,'login']);
@@ -18,7 +19,7 @@ Route::post('supplier-registration',[SupplierController::class,'create_supplier'
 Route::post('logistic-registration',[LogisticsController::class,'create_logistic']);
 
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware( 'auth:sanctum')->group(function () {
 
 /*
 * admin create users
@@ -51,11 +52,6 @@ Route::post('delete-user',[AdminController::class,'delete_user']);
 Route::post('delete-farmer',[FarmerController::class,'delete_farmer']);
 Route::post('delete-supplier',[SupplierController::class,'delete_supplier']);
 Route::post('delete-logistic',[LogisticsController::class,'delete_logistic']);
-
-
-
-
-
 
 //IoT Routes
 Route::post('create-device',[AdminController::class,'add_LoT']);

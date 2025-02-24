@@ -57,11 +57,6 @@ class AdminController extends Controller
     The admin has the ability to create new users
     */
 
-
-
-
-
-
      public function create_user(Request $request)
      {
         $validated = $request->validate([
@@ -79,17 +74,17 @@ class AdminController extends Controller
         $user = User::where('email', $request->email)
         ->where('type', $request->type)
         ->firstOrFail();
-        if($request->type == 'farmer'){
-        $farmer = $user->farmer()->create([
+if($request->type == 'farmer'){
+    $farmer = $user->farmer()->create([
         'surname' => $request->surname,
         'name' => $request->name,
         'farm_name' => $request->farm_name,
         'farm_location' => $request->farm_location,
         'farm_size' => $request->farm_size,
         ]);
-        }
-    elseif($request->type == 'supplier')
-    {
+}
+elseif($request->type == 'supplier')
+{
     $supplier = $user->supplier()->create([
         'surname' => $request->surname,
         'name' => $request->name,
@@ -97,9 +92,9 @@ class AdminController extends Controller
         'company_address' => $request->company_address,
         'phone_number' => $request->phone_number,
         ]);
-    }
-    elseif($request->type == 'logistic')
-    {
+}
+elseif($request->type == 'logistic')
+{
     $logistic = $user->logistic()->create(
         [
         'company_name' => $request->company_name, 
@@ -111,14 +106,14 @@ class AdminController extends Controller
         'driver_phone' =>$request->driver_phone
         ]
         );
-        }else
-    {
+}else
+{
    
     return response()->json(['message' => 'Failed to create user'], 500);
 
-    }
+}
 
-    return response()->json(['message' => 'User created successfully'], 200);
+return response()->json(['message' => 'User created successfully'], 200);
         
 }
 /*
@@ -184,7 +179,7 @@ public function update_user(Request $request)
     }
 
     $model->fill($validated);
-    $saved = $model->save();
+    $saved = $model->save($validated);
  
     if ($saved) {
         return response()->json(['message' => 'User updated successfully'], 200);
@@ -247,6 +242,36 @@ try{
 }
    
  }
+
+
+ public function change_password(Request $request)
+{
+    $request->validate([
+        'current_password' => 'required|string',
+        'new_password' => 'required|string|min:8|confirmed', 
+    ]);
+
+    // Check if the current password is correct
+    if (!Hash::check($request->current_password, Auth::user()->password)) {
+        return response()->json(['current_password' => ' The current password is incorrect.']);
+    }
+
+    // Update the user's password
+    $user = Auth::user();
+    $user->password = Hash::make($request->new_password); // Hash the new password
+    $user->save();
+
+    return response()->json(['states'=>'password changed successfully'],200);
+    
+}
+/**
+ * end of the user section
+ */
+
+ /**
+  * LoT device section monitoring  
+  */
+
 
   //create LoT
 
