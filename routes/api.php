@@ -48,40 +48,42 @@ Route::get('view-logistic',[LogisticsController::class,'view_logistic']);
  * Delete users
  */
 Route::get('delete-user/{id}',[AdminController::class,'delete_user']);
-Route::post('delete-farmer',[FarmerController::class,'delete_farmer']);
+Route::get('delete-farmer/{id}',[FarmerController::class,'delete_farmer']);
 Route::post('delete-supplier',[SupplierController::class,'delete_supplier']);
 Route::post('delete-logistic',[LogisticsController::class,'delete_logistic']);
 
 //IoT Routes
 Route::post('create-device',[AdminController::class,'add_LoT']);
 Route::post('update-device',[AdminController::class,'update_LoT']);
-Route::post('delete-device/{id}',[AdminController::class,'delete_LoT']);
+Route::get('delete-device/{id}',[AdminController::class,'delete_LoT']);
 Route::get('view-devices',[AdminController::class,'read_all_LoT']);
 Route::get('view-device/{id}',[AdminController::class,'read_LoT']);
 
 //IoT condition
 Route::post('create-device-condition',[AdminController::class,'create_LoT_condition']);
-Route::post('delete-device-condition/{id}',[AdminController::class,'delete_LoT_condition']);
+Route::get('delete-device-condition/{id}',[AdminController::class,'delete_LoT_condition']);
 Route::post('update-device-condition',[AdminController::class,'update_LoT_condtion']);
 Route::get('view-device-condition/{id}',[AdminController::class,'view_LoT_condition']);
 
 //logistics routes
 Route::post('update-route',[AdminController::class,'update_route']);
-Route::post('delete-route/{id}',[AdminController::class,'delete_route']);
+Route::get('delete-route/{id}',[AdminController::class,'delete_route']);
 Route::post('view-route',[AdminController::class,'view_route']);
 Route::post('view-routes',[AdminController::class,'view-routes']);
 
 /**
  * FarmerController
  */
-Route::post('edit-farmer',[FarmerController::class,'edit_farmer']);
-Route::post('view-farmer',[FarmerController::class,'view_farmer']);
-Route::post('edit-farmer',[FarmerController::class,'edit_farmer']);
 Route::post('change-password',[FarmerController::class,'change_farmer_password']);
+
+
+
+
 Route::post('create-crop',[FarmerController::class,'crop_details']);
-Route::post('view-crop',[FarmerController::class,'view_crop']);
-Route::get('view-crops',[FarmerController::class,'view_all_crops']);            
-Route::post('delete-crop',[FarmerController::class,'delete_crop']);
+Route::get('view-crop/{id}',[FarmerController::class,'view_crop']);
+Route::get('view-crops',[FarmerController::class,'view_all_crops']);    
+Route::get('delete-crop/{id}',[FarmerController::class,'delete_crop']);
+
 Route::post('update-farmer-details',[FarmerController::class,'update_farmer']);
 Route::post('update-status',[FarmerController::class,'updateStatus']);
 Route::get('show-status',[FarmerController::class,'show']);

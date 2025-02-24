@@ -85,12 +85,12 @@ public function view_farmers()
  return response()->json(['data'=>$users]);
 }
 
-public function delete_farmer(Request $request)
+public function delete_farmer($id)
 {
   
 try{
-  $user = User::findOrFail($request->supplier_id);
-  $users = User::where('id', $request->id)->with('farmer')->delete();
+  $user = User::findOrFail($id);
+  $users = User::where('id', $id)->with('farmer')->delete();
   return response()->json(['message','user deleted successful']);
 
   }
@@ -99,16 +99,6 @@ try{
 }
   
 }
-
-
-
-
-
-
-
-
-
-
 
 public function change_farmer_password(Request $request)
 {
@@ -166,9 +156,9 @@ public function update_crop(Request $request)
         return response()->json(['message'=>'update successfully'],200);
     }
 }
-public function delete_crop(Request $request)
+public function delete_crop($id)
 {
-    Crop::findOrFail($request->id)->delete();
+    Crop::findOrFail($id)->delete();
     return response()->json(['message'=> 'crop deleted'],200);
 }
 
@@ -178,9 +168,9 @@ public function view_all_crops()
     return response()->json(['data'=> $data],200);
 } 
 
-public function view_crop(Request $request)
+public function view_crop($id)
 {
-    $data = Crop::where('id',$request->id)->first();
+    $data = Crop::where('id',$id)->first();
     return response()->json(['data'=> $data],200);
 }
 
