@@ -29,7 +29,7 @@ Route::post('create-user',[AdminController::class,'create_user']);
 /*
 *update users
 */
-Route::post('update-user-test',[AdminController::class,'update_user']); 
+Route::post('update-user',[AdminController::class,'update_user']); 
 Route::post('update-farmer-details',[FarmerController::class,'edit_farmer']);
 Route::post('update-supplier-details',[SupplierController::class,'edit_supplier']);
 Route::post('update-logistic-details',[LogisticsController::class,'edit_logistic']);
