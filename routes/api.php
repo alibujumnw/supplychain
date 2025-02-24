@@ -81,7 +81,7 @@ Route::post('change-password',[FarmerController::class,'change_farmer_password']
 
 Route::post('create-crop',[FarmerController::class,'crop_details']);
 Route::get('view-crop/{id}',[FarmerController::class,'view_crop']);
-Route::get('view-crops',[FarmerController::class,'view_all_crops']);    
+Route::get('view-crops',[FarmerController::class,'view_all_crops']);     
 Route::get('delete-crop/{id}',[FarmerController::class,'delete_crop']);
 
 Route::post('update-farmer-details',[FarmerController::class,'update_farmer']);
