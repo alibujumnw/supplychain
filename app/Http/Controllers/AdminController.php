@@ -53,12 +53,6 @@ class AdminController extends Controller
             ], 400);
         }
     }
-
-    public function test()
-    {
-        echo"";
-    }
-
     /*
     The admin has the ability to create new users
     */
@@ -79,6 +73,7 @@ class AdminController extends Controller
         $user = User::where('email', $request->email)
         ->where('type', $request->type)
         ->firstOrFail();
+     
         if($request->type == 'farmer'){
         $farmer = $user->farmer()->create([
         'surname' => $request->surname,
@@ -88,7 +83,8 @@ class AdminController extends Controller
         'farm_size' => $request->farm_size,
         ]);
         }
-    elseif($request->type == 'supplier')
+    
+        elseif($request->type == 'supplier')
     {
     $supplier = $user->supplier()->create([
         'surname' => $request->surname,
@@ -128,23 +124,8 @@ update user
 public function update_user(Request $request)
 {
 
-    $val = $request->validate([
-        'surname' => 'nullable',
-        'name' => 'nullable',
-        'farm_name' => 'nullable',
-        'farm_location' => 'nullable',
-        'farm_size' => 'nullable',
-    ]);
-
-    $mod = Farmer::where('farmer_id',$request->id)->first();
-   // $val['email'] = $email;
-    $mod->fill($val);
-    $mod->save();
-
-
-    /*
     $validated = $request->validate([
-        'name' => 'nullable|string|max:255',
+      //  'name' => 'nullable|string|max:255',
         'email'=> 'nullable|string|max:255'. $request->id,
         'type'=> 'nullable|string|max:255',
         'id'=>'required'
@@ -170,9 +151,9 @@ public function update_user(Request $request)
         'company_name' => 'nullable',
         'company_location' => 'nullable', 
         'company_phone' => 'nullable',
-        'vihecle_type' => 'nullable', 
-        'vihecle_number' => 'nullable',
-        'driver' => 'nullable',
+        'vehicle_type' => 'nullable', 
+        'vehicle_number' => 'nullable',
+        'driver_full_name' => 'nullable',
         'driver_phone' => 'nullable'
     ]);
 
@@ -215,7 +196,6 @@ public function update_user(Request $request)
     // Catch other unexpected errors
     return response()->json(['message' => 'Error updating user', 'error' => $e->getMessage()], 500);
 }
-*/
 
 }
 
