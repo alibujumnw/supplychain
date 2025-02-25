@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'paths' => ['*'],
+    'paths' => ['api/*'],
     'allowed_methods' => ['*'],
     'allowed_origins' => ['*'], // Replace with your frontend URL
     'allowed_origins_patterns' => [],
