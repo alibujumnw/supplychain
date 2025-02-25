@@ -65,13 +65,13 @@ class AdminController extends Controller
      public function create_user(Request $request)
      {
         $validated = $request->validate([
-            'name' => 'nullable|string|max:255',
+          //  'name' => 'nullable|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
             'type'=>'required|string',
         ]);
         $user = User::create([
-            'name' => $request->name,
+          //   'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'type' => $request->type,
