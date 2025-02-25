@@ -16,9 +16,9 @@ return new class extends Migration
         $table->string('company_name'); 
         $table->string('company_location'); 
         $table->string('company_phone');
-        $table->string('vihecle_type'); 
-        $table->string('vihecle_number');
-        $table->string('driver');
+        $table->string('vehicle_type'); 
+        $table->string('vehicle_number');
+        $table->string('driver_full_name');
         $table->string('driver_phone');
         $table->string('logistic_id');
         $table->timestamps();

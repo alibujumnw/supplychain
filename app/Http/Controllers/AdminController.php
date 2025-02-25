@@ -127,6 +127,22 @@ update user
 
 public function update_user(Request $request)
 {
+
+    $val = $request->validate([
+        'surname' => 'nullable',
+        'name' => 'nullable',
+        'farm_name' => 'nullable',
+        'farm_location' => 'nullable',
+        'farm_size' => 'nullable',
+    ]);
+
+    $mod = Farmer::where('farmer_id',$request->id)->first();
+   // $val['email'] = $email;
+    $mod->fill($val);
+    $mod->save();
+
+
+    /*
     $validated = $request->validate([
         'name' => 'nullable|string|max:255',
         'email'=> 'nullable|string|max:255'. $request->id,
@@ -199,7 +215,7 @@ public function update_user(Request $request)
     // Catch other unexpected errors
     return response()->json(['message' => 'Error updating user', 'error' => $e->getMessage()], 500);
 }
-
+*/
 
 }
 

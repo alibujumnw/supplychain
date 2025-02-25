@@ -14,9 +14,9 @@ class Logistic extends Model
         'company_name', 
         'company_location', 
         'company_phone',
-        'vihecle_type', 
-        'vihecle_number',
-        'driver',
+        'vehicle_type', 
+        'vehicle_number',
+        'driver_full_name',
         'driver_phone', 
         'logistic_id'
     ];

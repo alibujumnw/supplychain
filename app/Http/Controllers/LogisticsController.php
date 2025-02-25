@@ -34,9 +34,9 @@ class LogisticsController extends Controller
         'company_name' => $request->company_name, 
         'company_location'=>$request->company_location, 
         'company_phone' =>$request->company_phone,
-        'vihecle_type' => $request->vehecle_type, 
-        'vihecle_number' => $request->vehecle_number,
-        'driver' => $request->vehecle->driver,
+        'vehicle_type' => $request->vehecle_type, 
+        'vehicle_number' => $request->vehecle_number,
+        'driver_full_name' => $request->vehecle->driver,
         'driver_phone' =>$request->driver_phone
         ]
         );
