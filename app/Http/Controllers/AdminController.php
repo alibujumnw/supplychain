@@ -213,7 +213,7 @@ public function view_all_users($type)
         // Fetch suppliers along with their related user data
         $users = User::where('type', 'supplier')->with('supplier')->get();
     }elseif($type === 'logistic'){
-            $user = User::where('type', 'logistic')->with('logistic')->get();
+            $users = User::where('type', 'logistic')->with('logistic')->get();
     } 
     else {
         // If the type is invalid, return an error response
