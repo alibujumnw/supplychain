@@ -254,7 +254,7 @@ public function add_LoT(Request $request)
         'device_type' => 'required|string|max:255',
         'serial_number' => 'required|string|unique:devices,serial_number',
         'description' => 'nullable|string',
-        'status' => 'nullable|string|inactive,inactive',
+        'status' => 'nullable|string',
         'user_id' => 'required',
         'device_location' => 'required',
         'location'=>'nullable',
