@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Livestock extends Model
 {
 
-    use HasFactory,HasUuids;
+    use HasFactory;
 
     protected $fillable = [ 
       'create_product',

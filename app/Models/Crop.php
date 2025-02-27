@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Crop extends Model
 {
 
-    use HasFactory, HasUuids;
+    use HasFactory;
     protected $fillable = [
    'product_name',
    'quantity',
