@@ -312,7 +312,7 @@ public function login(Request $request)
     
     public function view_livestock($id)
     {
-        $data = Livestock::where('farmar_id',$id)->get();
+        $data = Livestock::where('farmer_id',$id)->get();
         return response()->json(['data'=> $data],200);
     }
 
