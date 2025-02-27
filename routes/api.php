@@ -97,5 +97,6 @@ Route::get('show-status',[FarmerController::class,'show']);
   */
 
   Route::post('create-crop',[FarmerController::class,'create_crop']);
+  Route::post('create-livestock',[FarmerController::class,'create_livestock']);
 
 });
