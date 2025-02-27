@@ -40,7 +40,7 @@ Route::post('update-logistic-details',[LogisticsController::class,'edit_logistic
  */
 Route::get('view-all-users/{type}',[AdminController::class,'view_all_users']);
 Route::get('view-suppliers',[SupplierController::class,'view_suppliers']);
-Route::get('view-farmers',[FarmerController::class,'view_farmers']);
+Route::get('view-farmers/{userId}',[FarmerController::class,'view_farmers']);
 Route::get('view-logistic',[LogisticsController::class,'view_logistic']);
 
 

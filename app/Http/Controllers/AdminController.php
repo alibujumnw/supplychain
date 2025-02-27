@@ -35,12 +35,14 @@ class AdminController extends Controller
                 $token = $user->createToken('token')->plainTextToken;
                 $cooke = cookie('jwt', $token, 60 * 11);
                 $role = $user->type;
+                $id = $user->id;
                 #otp nolonger send to employee
                 return response()->json([
                     'status' => 'Request was successfull',
                     'message' => 'Admin has been sign-in successfully',
                     'data' => $token,
                     'role' => $role,
+                    'id' => $id,
                 ], 200)->withCookie($cooke);
 
             }

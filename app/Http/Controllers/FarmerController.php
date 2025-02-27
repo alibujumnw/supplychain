@@ -79,9 +79,9 @@ class FarmerController extends Controller
     }
 
 
-public function view_farmers()
+public function view_farmers($userId)
 {    
- $users = User::where('type', 'farmer')->with('farmer')->get();
+ $users = User::where('id', $userId)->with('farmer')->get();
  return response()->json(['data'=>$users]);
 }
 
