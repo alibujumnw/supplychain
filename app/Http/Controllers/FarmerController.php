@@ -81,7 +81,7 @@ class FarmerController extends Controller
 
 public function view_farmers()
 {    
- $users = User::where('type', 'supplier')->with('supplier')->get();
+ $users = User::where('type', 'farmer')->with('farmer')->get();
  return response()->json(['data'=>$users]);
 }
 
