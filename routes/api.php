@@ -69,7 +69,7 @@ Route::get('view-device-condition/{id}',[AdminController::class,'view_LoT_condit
 Route::post('update-route',[AdminController::class,'update_route']);
 Route::get('delete-route/{id}',[AdminController::class,'delete_route']);
 Route::post('view-route',[AdminController::class,'view_route']);
-Route::post('view-routes',[AdminController::class,'view-routes']);
+Route::get('view-routes',[AdminController::class,'view-routes']);
 
 /**
  * FarmerController
