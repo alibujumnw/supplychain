@@ -74,7 +74,7 @@ Route::post('view-routes',[AdminController::class,'view-routes']);
 /**
  * FarmerController
  */
-Route::post('change-password',[FarmerController::class,'change_farmer_password']);
+Route::post('change-password',[AdminController::class,'change_password']);
 
 
 

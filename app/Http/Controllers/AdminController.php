@@ -433,4 +433,25 @@ public function view_LoT_condition($id)
     return response()->json(['route'=>$route],200);
 }
 
+public function change_password(Request $request)
+{
+    $request->validate([
+        'current_password' => 'required|string',
+        'new_password' => 'required|string|min:8|confirmed', 
+    ]);
+
+    // Check if the current password is correct
+    if (!Hash::check($request->current_password, Auth::user()->password)) {
+        return response()->json(['current_password' => ' The current password is incorrect.']);
+    }
+
+    // Update the user's password
+    $user = Auth::user();
+    $user->password = Hash::make($request->new_password); // Hash the new password
+    $user->save();
+
+    return response()->json(['states'=>'password changed successfully'],200);
+    
+}
+
 }
