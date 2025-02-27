@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Livestock;
 use Exception;
 use App\Models\Crop;
 use App\Models\User;
@@ -252,6 +253,62 @@ public function login(Request $request)
 
         return response()->json(['delivery' => $delivery],200);
     }
-         
+        
+    
+    public function create_crop(Request $request)
+    {
+        $data = $request->validate(
+            [
+                'product_name' => 'required',
+                'quantity' => 'required',
+                'kilograms' => 'required',
+                'price_per_unit' => 'required',
+                'planting_date' => 'required',
+                'expected_harvest_data' => 'required',
+                'soil_type' => 'required',
+                'irrigation-method' => 'required',
+                 'fertilizers_used' => 'required',
+                 'description'=> 'required',
+            ]
+            );
 
+            $model = Crop::create($data);
+            if($model)
+            {
+                return response()->json(['message'=>'crop created successfully'],200);
+            }
+            else
+            {
+                return response()->json(['message'=>'failed to create data']);
+            }
+    }
+
+
+
+    public function create_livestock(Request $request)
+    {
+        $data = $request->validate([
+            'create_product' => 'required',
+            'quantity' => 'required',
+            'units' => 'required',
+            'price_per_unit' => 'required',
+            'breed' => 'required',
+            'age' => 'required',
+            'feed_type' => 'required',
+            'health_status' => 'required',
+            'vaccination_status' => 'required',
+            'description' => 'required',
+        ]);
+
+        $model = Livestock::create($data);
+        if($model)
+        {
+            return response()->json(['message'=>'livestock created successfully'],200);
+        }
+        else
+        {
+            return response()->json(['message'=>'failed to create data']);
+        }
+
+    }
 }

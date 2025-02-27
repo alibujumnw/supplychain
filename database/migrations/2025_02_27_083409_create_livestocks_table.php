@@ -11,17 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('crops', function (Blueprint $table) {
+        Schema::create('livestocks', function (Blueprint $table) {
             $table->id();
-            $table->string('product_name');
+            $table->string('create_product');
             $table->string('quantity');
-            $table->string('kilograms');
+            $table->string('units');
             $table->string('price_per_unit');
-            $table->string('planting_date');
-            $table->string('expected_harvest_data');
-            $table->string('soil_type');
-            $table->string('irrigation-method');
-            $table->string('fertilizers_used');
+            $table->string('breed');
+            $table->string('age');
+            $table->string('feed_type');
+            $table->string('health_status');
+            $table->string('vaccination_status');
             $table->string('description');
             $table->timestamps();
         });
@@ -32,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('crops');
+        Schema::dropIfExists('livestocks');
     }
 };

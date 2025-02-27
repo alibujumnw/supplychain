@@ -11,9 +11,15 @@ class Crop extends Model
 
     use HasFactory, HasUuids;
     protected $fillable = [
-    'crop_type',
-    'harvest_timeline',
-    'quantity',
-    'quality'
+   'product_name',
+   'quantity',
+   'kilograms',
+   'price_per_unit',
+   'planting_date',
+   'expected_harvest_data',
+   'soil_type',
+   'irrigation-method',
+    'fertilizers_used',
+    'description'
     ];
 }
