@@ -100,6 +100,6 @@ Route::get('show-status',[FarmerController::class,'show']);
 Route::get('view-crop/{id}',[FarmerController::class,'view_crop']);
 
 
-Route::get('view-livestock/{id}',[FarmerController::class,'view_crop']);
+Route::get('view-livestock/{id}',[FarmerController::class,'view_livestock']);
 
 });

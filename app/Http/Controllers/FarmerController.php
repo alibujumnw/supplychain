@@ -167,7 +167,7 @@ public function delete_crop($id)
 
 public function view_crop($id)
 {
-    $data = Crop::where('id',$id)->get();
+    $data = Crop::where('farmer_id',$id)->get();
     return response()->json(['data'=> $data],200);
 }
 
@@ -310,9 +310,9 @@ public function login(Request $request)
 
     }
     
-    public function view_livestock($farmer_id)
+    public function view_livestock($id)
     {
-        $data = Crop::where('farmar_id',$farmer_id)->get();
+        $data = Crop::where('farmar_id',$id)->get();
         return response()->json(['data'=> $data],200);
     }
 
