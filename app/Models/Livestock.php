@@ -22,5 +22,6 @@ class Livestock extends Model
       'health_status',
       'vaccination_status',
       'description',
+      'farmer_id'
     ];
 }

@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('health_status');
             $table->string('vaccination_status');
             $table->string('description');
+            $table->string('farmer_id');
             $table->timestamps();
         });
     }

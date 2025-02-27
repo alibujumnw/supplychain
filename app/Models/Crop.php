@@ -20,6 +20,7 @@ class Crop extends Model
    'soil_type',
    'irrigation-method',
     'fertilizers_used',
-    'description'
+    'description',
+    'farmer_id'
     ];
 }

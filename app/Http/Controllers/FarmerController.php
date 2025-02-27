@@ -163,15 +163,11 @@ public function delete_crop($id)
     return response()->json(['message'=> 'crop deleted'],200);
 }
 
-public function view_all_crops()
-{
-    $data =Crop::all();
-    return response()->json(['data'=> $data],200);
-} 
+
 
 public function view_crop($id)
 {
-    $data = Crop::where('id',$id)->first();
+    $data = Crop::where('id',$id)->get();
     return response()->json(['data'=> $data],200);
 }
 
@@ -269,6 +265,7 @@ public function login(Request $request)
                 'irrigation-method' => 'required',
                  'fertilizers_used' => 'required',
                  'description'=> 'required',
+                 'farmer_id' => 'required',
             ]
             );
 
@@ -298,6 +295,7 @@ public function login(Request $request)
             'health_status' => 'required',
             'vaccination_status' => 'required',
             'description' => 'required',
+            'farmer_id' => 'required'
         ]);
 
         $model = Livestock::create($data);
@@ -311,4 +309,11 @@ public function login(Request $request)
         }
 
     }
+    
+    public function view_livestock($farmer_id)
+    {
+        $data = Crop::where('farmar_id',$farmer_id)->get();
+        return response()->json(['data'=> $data],200);
+    }
+
 }

@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('irrigation-method');
             $table->string('fertilizers_used');
             $table->string('description');
+            $table->string('farmer_id');
             $table->timestamps();
         });
     }
