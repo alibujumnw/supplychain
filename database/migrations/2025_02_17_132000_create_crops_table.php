@@ -17,13 +17,19 @@ return new class extends Migration
             $table->string('quantity');
             $table->string('kilograms');
             $table->string('price_per_unit');
-            $table->string('planting_date');
-            $table->string('expected_harvest_data');
+            $table->string('storage_date');
+            $table->string('storage_last_date');
             $table->string('soil_type');
             $table->string('irrigation-method');
             $table->string('fertilizers_used');
             $table->string('description');
             $table->string('farmer_id');
+            $table->string('temp_min');
+            $table->string('temp_max');
+            $table->string('shelf_life');
+            $table->string('humidity_min');
+            $table->string('humidity_max');
+            $table->string('warehouse_id');
             $table->timestamps();
         });
     }

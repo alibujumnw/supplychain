@@ -24,6 +24,11 @@ return new class extends Migration
             $table->string('vaccination_status');
             $table->string('description');
             $table->string('farmer_id');
+            $table->string('temp_min');
+            $table->string('temp_max');
+            $table->string('humidity_min');
+            $table->string('humidity_max');
+            $table->string('warehouse_id');
             $table->timestamps();
         });
     }

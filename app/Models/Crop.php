@@ -15,12 +15,19 @@ class Crop extends Model
    'quantity',
    'kilograms',
    'price_per_unit',
-   'planting_date',
-   'expected_harvest_data',
+   'storage_date',
+   'storage_last_date',
    'soil_type',
    'irrigation-method',
     'fertilizers_used',
     'description',
-    'farmer_id'
+    'farmer_id',
+    'temp_min',
+    'temp_max',
+    'humidity_min',
+    'humidity_max',
+     'humidity',
+     'shelf_life',
+     'warehouse_id'
     ];
 }

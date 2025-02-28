@@ -260,13 +260,20 @@ public function login(Request $request)
                 'quantity' => 'required',
                 'kilograms' => 'required',
                 'price_per_unit' => 'required',
-                'planting_date' => 'required',
-                'expected_harvest_data' => 'required',
+                'storage_date' => 'required',
+                'storage_last_date' => 'required',
                 'soil_type' => 'required',
                 'irrigation-method' => 'required',
                  'fertilizers_used' => 'required',
                  'description'=> 'required',
                  'farmer_id' => 'required',
+                 'temp_min' => 'required',
+                  'temp_max' => 'required',
+                'humidity_min' => 'required',
+                'humidity_max' => 'required',
+                 'humidity' => 'required',
+                'shelf_life' => 'required',
+                'warehouse_id' => 'required'
             ]
             );
 
@@ -296,7 +303,13 @@ public function login(Request $request)
             'health_status' => 'required',
             'vaccination_status' => 'required',
             'description' => 'required',
-            'farmer_id' => 'required'
+            'farmer_id' => 'required',
+            'temp_min' => 'required',
+            'temp_max'=>'required',
+            'humidity_min'=>'required',
+            'humidity_max' => 'required',
+            'warehouse_id' => 'required',
+            
         ]);
 
         $model = Livestock::create($data);
