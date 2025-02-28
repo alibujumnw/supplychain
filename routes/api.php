@@ -93,8 +93,8 @@ Route::get('show-status',[FarmerController::class,'show']);
   * new routes
   */
 
-  Route::post('create-crop',[FarmerController::class,'create_crop']);
-  Route::post('create-livestock',[FarmerController::class,'create_livestock']);
+Route::post('create-crop',[FarmerController::class,'create_crop']);
+Route::post('create-livestock',[FarmerController::class,'create_livestock']);
   
 
 Route::get('view-crop/{id}',[FarmerController::class,'view_crop']);
@@ -103,5 +103,7 @@ Route::get('view-crop/{id}',[FarmerController::class,'view_crop']);
 Route::get('view-livestock/{id}',[FarmerController::class,'view_livestock']);
 
 Route::post('create-warehouse',[FarmerController::class,'create_warehouse']);
+
+Route::get('view-warehouse',[FarmerController::class,'view_warehouse']);
 
 });

@@ -350,6 +350,11 @@ public function login(Request $request)
             return response()->json(['message'=>'failed to create data']);
         }
     }
-
+    
+    public function view_warehouse($id)
+    {
+        $date = Warehouse::where('farmer_id',$id)->get();
+        return response()->json(['warehouse' => $date],200);
+    }
 
 }
