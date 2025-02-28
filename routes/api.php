@@ -102,4 +102,6 @@ Route::get('view-crop/{id}',[FarmerController::class,'view_crop']);
 
 Route::get('view-livestock/{id}',[FarmerController::class,'view_livestock']);
 
+Route::post('create-warehouse',[FarmerController::class,'create_warehouse']);
+
 });

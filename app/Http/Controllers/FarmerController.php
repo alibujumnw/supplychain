@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Livestock;
 use Exception;
 use App\Models\Crop;
 use App\Models\User;
 use App\Models\Farmer;
 use App\Models\Delivery;
+use App\Models\Livestock;
+use App\Models\Warehouse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -315,5 +316,27 @@ public function login(Request $request)
         $data = Livestock::where('farmer_id',$id)->get();
         return response()->json(['data'=> $data],200);
     }
+
+    public function create_warehouse(Request $request){
+        $data = $request->validate([
+            'warehouse_name' => 'required',
+            'warehouse_size' => 'required',
+            'temp_min' => 'required',
+            'temp_max' => 'required',
+            'IoT_device_id' => 'required',
+            'warehouse_type' => 'required',
+        ]);
+
+        $model = Warehouse::create($data);
+        if($model)
+        {
+            return response()->json(['message'=>'livestock created successfully'],200);
+        }
+        else
+        {
+            return response()->json(['message'=>'failed to create data']);
+        }
+    }
+
 
 }
