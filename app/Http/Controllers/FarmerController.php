@@ -355,10 +355,6 @@ public function login(Request $request)
     public function view_warehouse($id)
     {
         $data = Warehouse::where('farmer_id',$id)->get();
-        if($data->isEmpty())
-        {
-            return response()->json(['data'=> 'no warehouse found']);
-        }
         return response()->json(['warehouse' => $data],200);
     }
 
