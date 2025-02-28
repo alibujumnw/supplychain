@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('temp_max');
             $table->string('IoT_device_id');
             $table->string('warehouse_type');
+            $table->string('farmer_id');
             $table->timestamps();
         });
     }

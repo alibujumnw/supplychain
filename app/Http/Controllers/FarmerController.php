@@ -338,6 +338,7 @@ public function login(Request $request)
             'temp_max' => 'required',
             'IoT_device_id' => 'required',
             'warehouse_type' => 'required',
+            'farmer_id' => 'required',
         ]);
 
         $model = Warehouse::create($data);

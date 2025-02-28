@@ -17,5 +17,6 @@ class Warehouse extends Model
         'temp_max',
         'IoT_device_id',
         'warehouse_type',
+        'farmer_id'
      ];
 }
