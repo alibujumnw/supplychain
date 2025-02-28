@@ -271,7 +271,6 @@ public function login(Request $request)
                   'temp_max' => 'required',
                 'humidity_min' => 'required',
                 'humidity_max' => 'required',
-                 'humidity' => 'required',
                 'shelf_life' => 'required',
                 'warehouse_id' => 'required'
             ]

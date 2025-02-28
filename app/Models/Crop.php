@@ -26,7 +26,6 @@ class Crop extends Model
     'temp_max',
     'humidity_min',
     'humidity_max',
-     'humidity',
      'shelf_life',
      'warehouse_id'
     ];
