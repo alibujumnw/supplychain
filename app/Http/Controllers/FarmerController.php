@@ -357,4 +357,23 @@ public function login(Request $request)
         return response()->json(['warehouse' => $data],200);
     }
 
+
+public function warehouse_products($id)
+{
+    $farmer = Warehouse::where('farmer_id',$id)->get();
+    $product = [];
+    foreach($farmer as $data)
+    {
+        $crops = Crop::where('warehouse_id', $data->id)->get();
+        $livestock = Livestock::where('warehouse_id', $data->id)->get();
+        $product = array_merge($product, $crops->toArray());
+        $product = array_merge($product, $livestock->toArray());
+
+    }
+
+      return response()->json(['data'=>$product],200);
+}
+
+//comment
+
 }

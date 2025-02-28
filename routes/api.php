@@ -106,4 +106,6 @@ Route::post('create-warehouse',[FarmerController::class,'create_warehouse']);
 
 Route::get('view-warehouse/{id}',[FarmerController::class,'view_warehouse']);
 
+Route::get('warehouse/{id}',[FarmerController::class,'warehouse_products']);
+
 });
