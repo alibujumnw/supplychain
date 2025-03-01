@@ -87,9 +87,10 @@ public function view_farmers($userId)
  return response()->json(['data'=>$users]);
 }
 
+
+
 public function delete_farmer($id)
-{
-  
+{ 
 try{
   $user = User::findOrFail($id);
   $users = User::where('id', $id)->with('farmer')->delete();
@@ -140,14 +141,28 @@ public function change_farmer_password(Request $request)
         Crop::create($data);
         return response()->json(['message'=>'crop added successfully'],200);
  }
-public function update_crop(Request $request)
+
+ public function update_crop(Request $request)
 {
     $data = $request->validate([
-        'crop_type'=> 'nullable',
-        'harvest_timeline'=> 'nullable',
-        'quantity'=>'nullable',
-        'quality'=>'nullable',
-        'id' => 'required'
+        'product_name' => 'nullable',
+                'quantity' => 'nullable',
+                'kilograms' => 'nullable',
+                'price_per_unit' => 'nullable',
+                'storage_date' => 'nullable',
+                'storage_last_date' => 'nullable',
+                'soil_type' => 'nullable',
+                'irrigation-method' => 'nullable',
+                 'fertilizers_used' => 'nullable',
+                 'description'=> 'nullable',
+                 'farmer_id' => 'nullable',
+                 'temp_min' => 'nullable',
+                  'temp_max' => 'nullable',
+                'humidity_min' => 'nullable',
+                'humidity_max' => 'nullable',
+                'shelf_life' => 'nullable',
+                'warehouse_id' => 'nullable'
+            
     ]);
 
     $crop = Crop::findOrFail($request->id);
@@ -158,6 +173,7 @@ public function update_crop(Request $request)
         return response()->json(['message'=>'update successfully'],200);
     }
 }
+
 public function delete_crop($id)
 {
     Crop::findOrFail($id)->delete();
