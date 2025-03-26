@@ -233,8 +233,7 @@ public function view_all_users($type)
 
  public function account_details()
  {
-    $user = Auth::user();
-    $data = User::where('id',$user->id);
+    $data = User::where('role', 'admin');
     return response()->json(['data',$data],200);
  }
  /**
