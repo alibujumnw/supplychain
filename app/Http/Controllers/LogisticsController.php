@@ -84,7 +84,7 @@ class LogisticsController extends Controller
   }
   public function view_logistic(Request $request)
   {
-  $users = User::where('type', 'supplier')->with('supplier')->get();
+  $users = User::where('id', $request->id)->with('logistic')->first();
   return response()->json(['data'=>$users]);
   }
 

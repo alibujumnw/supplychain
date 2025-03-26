@@ -226,6 +226,17 @@ public function view_all_users($type)
 }
 
 
+/**
+ * Account Details
+ * 
+ */
+
+ public function account_details()
+ {
+    $user = Auth::user();
+    $data = User::all($user->id);
+    return response()->json(['data',$data],200);
+ }
  /**
   * delete user
   */
