@@ -10,6 +10,7 @@ use App\Models\Device;
 use App\Models\Farmer;
 use App\Models\Logistic;
 use App\Models\Supplier;
+use App\Models\Warehouse;
 use App\Models\SensorData;
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
@@ -464,6 +465,12 @@ public function change_password(Request $request)
 
     return response()->json(['states'=>'password changed successfully'],200);
     
+}
+
+public function total_warehouse()
+{
+    $warehouse = Warehouse::all();
+    return response()->json(['warehouse'=>$warehouse],200);
 }
 
 }

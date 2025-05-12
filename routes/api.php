@@ -20,6 +20,9 @@ Route::post('logistic-registration',[LogisticsController::class,'create_logistic
 
 Route::middleware( 'auth:sanctum')->group(function () {
 
+Route::get('total-warehouse',[AdminController::class,'total_warehouse']);
+
+
 /*
 * admin create users
 */
@@ -109,5 +112,8 @@ Route::post('create-warehouse',[FarmerController::class,'create_warehouse']);
 Route::get('view-warehouse/{id}',[FarmerController::class,'view_warehouse']);
 
 Route::get('warehouse/{id}',[FarmerController::class,'warehouse_products']);
+
+//logistic Routes
+Route::post('create-Route'.[LogisticsController::class,'create_route']);
 
 });

@@ -110,13 +110,23 @@ class LogisticsController extends Controller
     /**
      * Create a new logistics route.
      */
-    public function createRoute(Request $request)
+    public function create_route(Request $request)
     {
         $request->validate([
-            // Define validation rules for route creation (e.g., origin, destination, distance)
+            'start_location' => 'required',
+            'end_location' => 'required',
         ]);
 
-        $route = LogisticsRoute::create($request->all());
+        $route = LogisticsRoute::create([
+            'route_name'=> 'delevery',
+            'device_type',
+            'serial_number',
+            'start_location',
+            'end_location',
+            'est_time',
+            'device',
+            'status',
+        ]);
 
         return response()->json($route, 201); 
     }
@@ -126,6 +136,7 @@ class LogisticsController extends Controller
      */
     public function getRoutes()
     {
+        $user = Auth::user();
         $routes = LogisticsRoute::all(); 
         return response()->json($routes);
     }

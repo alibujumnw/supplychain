@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Condition;
+use App\Models\DeliveryCondition;
 use Exception;
 use App\Models\Crop;
 use App\Models\User;
@@ -124,70 +126,6 @@ public function change_farmer_password(Request $request)
     
 }
 
-/**
- * crop infomation
- */
-
- //create
- 
- public function crop_details(Request $request)
- {
-        $data = $request->validate([
-            'crop_type'=> 'required',
-            'harvest_timeline'=> 'required',
-            'quantity'=>'required',
-            'quality'=>'required',
-        ]);
-        Crop::create($data);
-        return response()->json(['message'=>'crop added successfully'],200);
- }
-
- public function update_crop(Request $request)
-{
-    $data = $request->validate([
-        'product_name' => 'nullable',
-                'quantity' => 'nullable',
-                'kilograms' => 'nullable',
-                'price_per_unit' => 'nullable',
-                'storage_date' => 'nullable',
-                'storage_last_date' => 'nullable',
-                'soil_type' => 'nullable',
-                'irrigation-method' => 'nullable',
-                 'fertilizers_used' => 'nullable',
-                 'description'=> 'nullable',
-                 'farmer_id' => 'nullable',
-                 'temp_min' => 'nullable',
-                  'temp_max' => 'nullable',
-                'humidity_min' => 'nullable',
-                'humidity_max' => 'nullable',
-                'shelf_life' => 'nullable',
-                'warehouse_id' => 'nullable'
-            
-    ]);
-
-    $crop = Crop::findOrFail($request->id);
-    $crop->fill($data);
-    $model = $crop->save();
-    if($model)
-    {
-        return response()->json(['message'=>'update successfully'],200);
-    }
-}
-
-public function delete_crop($id)
-{
-    Crop::findOrFail($id)->delete();
-    return response()->json(['message'=> 'crop deleted'],200);
-}
-
-
-
-public function view_crop($id)
-{
-    $data = Crop::where('farmer_id',$id)->get();
-    return response()->json(['data'=> $data],200);
-}
-
 public function login(Request $request)
 {
 
@@ -227,6 +165,24 @@ public function login(Request $request)
 /**
  * view real time data 
  */
+public function warehouse_condition($id)
+{
+    $user = Auth::user();
+    $warehouse = Warehouse::where('farmer_id',$user->id)->where('id',$id)->first();
+    if(!$warehouse)
+    {
+        return response()->json(['message'=>'warehouse not found']);
+    }
+    $conditions = Condition::where('warehouse_id',$warehouse->id)->first();
+    if(!$conditions)
+    {
+        return response()->json(['message'=>'no condition found for this warehouse']);
+    }
+    return response()->json(['data'=>$conditions],200);
+}
+
+
+
 
 /**
  * delivery status
@@ -255,8 +211,8 @@ public function login(Request $request)
         return response()->json(['message' => 'Delivery status updated successfully', 'delivery' => $delivery]);
     }
 
-    // Display the current delivery status
-    public function show($id)
+ 
+ public function show($id)
     {
         $delivery = Delivery::find($id);
 
@@ -266,9 +222,35 @@ public function login(Request $request)
 
         return response()->json(['delivery' => $delivery],200);
     }
-        
-    
-    public function create_crop(Request $request)
+       
+    //delivery conditions
+
+    public function delivery_condition($id)
+    {
+        $user = Auth::user();
+        $delivery = DeliveryCondition::findOrFail($id);
+        $user_delivery = DeliveryCondition::where('id',$id)->where('farmer_id',$user->id)->first();
+        if(!$user_delivery)
+        {
+            return response()->json(['message'=>'no delivery condtion']);
+        }
+        return response()->json(['data'=>$user_delivery],200);
+
+    }
+/**
+ * Delivery end
+ */
+
+
+  /**
+  * End of Real time data
+  */
+
+
+   /**
+    *Crop data 
+     */ 
+public function create_crop(Request $request)
     {
         $data = $request->validate(
             [
@@ -303,7 +285,78 @@ public function login(Request $request)
             }
     }
 
+public function delete_crop($id)
+{
 
+    $user = Auth::user();
+    Crop::where('id',$id)->where('farmer_id',$user->id)->delete();
+    return response()->json(['message'=> 'crop deleted'],200);
+}
+
+
+
+public function view_crop($id)
+{
+    $user = Auth::user();
+    $data = Crop::where('farmer_id',$user->id)->where('id',$id)->get();
+    return response()->json(['data'=> $data],200);
+}
+ 
+public function crop_details(Request $request)
+{
+       $data = $request->validate([
+           'crop_type'=> 'required',
+           'harvest_timeline'=> 'required',
+           'quantity'=>'required',
+           'quality'=>'required',
+       ]);
+       Crop::create($data);
+       return response()->json(['message'=>'crop added successfully'],200);
+}
+
+public function update_crop(Request $request)
+{
+   $data = $request->validate([
+       'product_name' => 'nullable',
+               'quantity' => 'nullable',
+               'kilograms' => 'nullable',
+               'price_per_unit' => 'nullable',
+               'storage_date' => 'nullable',
+               'storage_last_date' => 'nullable',
+               'soil_type' => 'nullable',
+               'irrigation-method' => 'nullable',
+                'fertilizers_used' => 'nullable',
+                'description'=> 'nullable',
+                'farmer_id' => 'nullable',
+                'temp_min' => 'nullable',
+                 'temp_max' => 'nullable',
+               'humidity_min' => 'nullable',
+               'humidity_max' => 'nullable',
+               'shelf_life' => 'nullable',
+               'warehouse_id' => 'nullable'
+           
+   ]);
+
+   $crop = Crop::findOrFail($request->id);
+   $crop->fill($data);
+   $model = $crop->save();
+   if($model)
+   {
+       return response()->json(['message'=>'update successfully'],200);
+   }
+   else
+   {
+    return response()->json(['message'=>'failed to update crop']);
+   }
+}
+
+    /**
+     * End of crop data
+     */
+
+/**
+ * Livestock data
+ */
 
     public function create_livestock(Request $request)
     {
@@ -345,6 +398,60 @@ public function login(Request $request)
         return response()->json(['data'=> $data],200);
     }
 
+    public function update_livestock(Request $request)
+    {
+        $data = $request->validate([
+            'create_product' => 'nullable',
+            'quantity' => 'nullable',
+            'units' => 'nullable',
+            'price_per_unit' => 'nullable',
+            'breed' => 'nullable',
+            'age' => 'nullable',
+            'feed_type' => 'nullable',
+            'health_status' => 'nullable',
+            'vaccination_status' => 'nullable',
+            'description' => 'nullable',
+            'farmer_id' => 'nullable',
+            'temp_min' => 'nullable',
+            'temp_max'=>'nullable',
+            'humidity_min'=>'nullable',
+            'humidity_max' => 'nullable',
+            'warehouse_id' => 'nullable',
+            
+        ]);
+
+        $user = Auth::user();
+        $farmer = Livestock::findOrFail('id',$request->id);
+        $livestock = Livestock::where('id', $request->id)->where('farmer_id',$user->id)->first();
+        if(!$livestock)
+        {
+            return response()->json(['message'=>'livestock not found']);
+        }
+        
+        $livestock->fill($data);
+        $model = $livestock->save();
+        if(!$model)
+        {
+            return response()->json(['message'=>'failed to update livestock']);
+        }
+        return response()->json(['message'=>'livestock updated'],200);
+    }
+
+    public function delete_livestock($id)
+    {
+        $user = Auth::user();
+        $data = Livestock::where('id',$id)->where('farmer_id',$user->id)->delete();
+        return response()->json(['message'=>'livestocl deleted'],200);
+    }
+
+/**
+ * Livestock data end
+ */
+
+
+ /**
+  * warehouse data
+  */
     public function create_warehouse(Request $request){
         $data = $request->validate([
             'warehouse_name' => 'required',
@@ -373,7 +480,38 @@ public function login(Request $request)
         return response()->json(['warehouse' => $data],200);
     }
 
+  public function update_warehouse(Request $request)
+  {
+    $user = Auth::user();
+    $data = $request->validate(
+        [
+            'warehouse_name' => 'nullable',
+            'warehouse_size' => 'nullable',
+            'temp_min' => 'nullable',
+            'temp_max' => 'nullable',
+            'IoT_device_id' => 'nullable',
+            'warehouse_type' => 'nulluable',
+        ]
+        );
+    $warehouse = Warehouse::where('id',$request->id)->where('farmer_id',$user->id)->first();
 
+    if(!$warehouse)
+    {
+        return response()->json(['message'=>'no warehouse found']);
+    }
+
+    Warehouse::update($data);
+
+  }
+//delete warehouse
+public function delete_warehouse($id)
+{
+    $user = Auth::user();
+    $warehouse = Warehouse::where('id',$id)->where('farmer_id',$user->id)->delete();
+    return response()->json(['message'=>'warehouse deleted']);
+}
+
+  //returns all the products in the warehouse
 public function warehouse_products($id)
 {
     $farmer = Warehouse::where('farmer_id',$id)->get();
@@ -390,6 +528,36 @@ public function warehouse_products($id)
       return response()->json(['data'=>$product],200);
 }
 
-//comment
+/**
+ * End of warehouse
+ */
+
+ public function store(Request $request)
+    {
+        $validator = $request->validate([
+          'temperature' => 'required', 
+        'warehouse_id' => 'required', 
+        'humidity' => 'required',  
+        'recorded_at' => 'required',
+        ]);
+
+        if (!$validator) {
+            return response()->json(['error' => 'unable to add conditions'], 400);
+        }
+
+        $reading = Condition::create([
+        'temperature' => $validator['temperature'], 
+        'warehouse_id' => $validator['warehouse_id'], 
+        'humidity' => $validator['humidity'],  
+        'recorded_at' => $validator['recorded_at'],
+        ]);
+
+        return response()->json([
+            'message' => 'Temperature reading saved successfully',
+            'data' => $reading
+        ], 201);
+    }
+    
+
 
 }

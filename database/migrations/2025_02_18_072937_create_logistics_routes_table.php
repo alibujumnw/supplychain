@@ -12,7 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('logistics_routes', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
+            $table->string('route_name')->nullable();
+            $table->string('device_type')->nullable();
+            $table->string('serial_number')->nullable();
+            $table->string('start_location')->nullable();
+            $table->string('end_location')->nullable();
+            $table->string('est_time')->nullable();
+            $table->string('device')->nullable();
+            $table->string('status')->nullable();
             $table->timestamps();
         });
     }
