@@ -114,6 +114,6 @@ Route::get('view-warehouse/{id}',[FarmerController::class,'view_warehouse']);
 Route::get('warehouse/{id}',[FarmerController::class,'warehouse_products']);
 
 //logistic Routes
-Route::post('create-Route'.[LogisticsController::class,'create_route']);
+Route::post('create-Route',[LogisticsController::class,'create_route']);
 
 });
